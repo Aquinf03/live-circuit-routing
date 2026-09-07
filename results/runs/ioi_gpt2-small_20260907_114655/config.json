@@ -1,0 +1,15 @@
+{
+  "task": "IOI",
+  "metric": "logit_diff(IO - S)",
+  "model": "gpt2-small",
+  "device": "cpu",
+  "score": "attn_x_vnorm",
+  "k": 15,
+  "B": 4,
+  "ban_bos": true,
+  "exclude_self": true,
+  "n_random": 10,
+  "seed": 0,
+  "limit": 0,
+  "n_examples": 23
+}

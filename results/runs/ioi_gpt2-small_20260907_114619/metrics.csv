@@ -1,0 +1,6 @@
+idx,a,b,prefix,io,s,io_id,s_id,t_star,n_edges_S,logit_diff_full,logit_diff_ablate_S,drop_S,drop_random_mean,drop_random_std,seed
+0,John,Mary,"When John and Mary went to the store, John gave a drink to", Mary, John,5335,1757,14,195,3.1721878051757812,-0.39406490325927734,3.5662527084350586,-0.12212715148925782,0.22081541424270273,0
+1,Mary,John,"When Mary and John went to the store, Mary gave a drink to", John, Mary,1757,5335,14,195,2.4786901473999023,1.0435152053833008,1.4351749420166016,0.02980976104736328,0.13670265185387678,1000
+2,Alice,Bob,"When Alice and Bob went to the store, Alice gave a drink to", Bob, Alice,5811,14862,14,195,3.096220016479492,-0.4499540328979492,3.5461740493774414,-0.0892303466796875,0.31088467106710005,2000
+3,Bob,Alice,"When Bob and Alice went to the store, Bob gave a drink to", Alice, Bob,14862,5811,14,195,3.8910112380981445,0.019496917724609375,3.871514320373535,0.057401847839355466,0.16592142493156023,3000
+4,Tom,Sarah,"When Tom and Sarah went to the store, Tom gave a drink to", Sarah, Tom,10490,4186,14,195,5.348816871643066,-3.2992324829101562,8.648049354553223,0.13769168853759767,0.24126904275985755,4000

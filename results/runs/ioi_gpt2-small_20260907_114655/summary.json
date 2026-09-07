@@ -1,0 +1,11 @@
+{
+  "task": "IOI",
+  "metric": "logit_diff(IO - S)",
+  "mean_n_edges": 195,
+  "mean_drop_S": 5.269547130750573,
+  "std_drop_S": 1.9230148955450703,
+  "mean_drop_R": 0.09831518919571586,
+  "std_drop_R": 0.27049556101066274,
+  "gap_S_minus_R": 5.171231941554858,
+  "n_examples": 23
+}
