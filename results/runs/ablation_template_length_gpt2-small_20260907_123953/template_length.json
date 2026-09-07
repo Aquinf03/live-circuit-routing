@@ -1,0 +1,113 @@
+{
+  "config": {
+    "model": "gpt2-small",
+    "device": "cpu",
+    "score": "attn_x_vnorm",
+    "k": 15,
+    "B": 4,
+    "n_random": 5,
+    "limit": 10,
+    "templates": [
+      "the_dot",
+      "bare",
+      "then",
+      "yesterday"
+    ]
+  },
+  "template_rows": [
+    {
+      "kind": "template",
+      "name": "the_dot",
+      "mean_n_edges": 67.5,
+      "mean_seq_len": 7,
+      "mean_drop_S": 4.046693897247314,
+      "mean_drop_R": 0.11979442596435547,
+      "gap": 3.9268994712829586,
+      "n_fail": 0,
+      "n_examples": 10
+    },
+    {
+      "kind": "template",
+      "name": "bare",
+      "mean_n_edges": 30,
+      "mean_seq_len": 4,
+      "mean_drop_S": 2.948738193511963,
+      "mean_drop_R": 0.3113870048522949,
+      "gap": 2.637351188659668,
+      "n_fail": 1,
+      "n_examples": 10
+    },
+    {
+      "kind": "template",
+      "name": "then",
+      "mean_n_edges": 75,
+      "mean_seq_len": 7,
+      "mean_drop_S": 5.479906272888184,
+      "mean_drop_R": 0.06900039672851563,
+      "gap": 5.410905876159668,
+      "n_fail": 0,
+      "n_examples": 10
+    },
+    {
+      "kind": "template",
+      "name": "yesterday",
+      "mean_n_edges": 111,
+      "mean_seq_len": 10,
+      "mean_drop_S": 2.3126069068908692,
+      "mean_drop_R": 0.12287403106689453,
+      "gap": 2.189732875823975,
+      "n_fail": 0,
+      "n_examples": 10
+    }
+  ],
+  "length_rows": [
+    {
+      "kind": "length",
+      "name": "filler_0",
+      "n_filler": 0,
+      "mean_n_edges": 67.5,
+      "mean_seq_len": 7,
+      "mean_drop_S": 4.046693897247314,
+      "mean_drop_R": 0.11979442596435547,
+      "gap": 3.9268994712829586,
+      "n_fail": 0,
+      "n_examples": 10
+    },
+    {
+      "kind": "length",
+      "name": "filler_1",
+      "n_filler": 1,
+      "mean_n_edges": 144,
+      "mean_seq_len": 12,
+      "mean_drop_S": 2.588443946838379,
+      "mean_drop_R": 0.01410398483276367,
+      "gap": 2.5743399620056153,
+      "n_fail": 1,
+      "n_examples": 10
+    },
+    {
+      "kind": "length",
+      "name": "filler_2",
+      "n_filler": 2,
+      "mean_n_edges": 207,
+      "mean_seq_len": 17,
+      "mean_drop_S": 3.1890310287475585,
+      "mean_drop_R": 0.09184032440185547,
+      "gap": 3.097190704345703,
+      "n_fail": 0,
+      "n_examples": 10
+    },
+    {
+      "kind": "length",
+      "name": "filler_4",
+      "n_filler": 4,
+      "mean_n_edges": 228,
+      "mean_seq_len": 27,
+      "mean_drop_S": 4.065381336212158,
+      "mean_drop_R": 0.01301067352294922,
+      "gap": 4.052370662689209,
+      "n_fail": 0,
+      "n_examples": 10
+    }
+  ]
+}

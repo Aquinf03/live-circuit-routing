@@ -1,0 +1,38 @@
+{
+  "config": {
+    "model": "gpt2-small",
+    "device": "cpu",
+    "k": 15,
+    "B": 4,
+    "n_random": 5,
+    "limit": 10,
+    "scores": [
+      "raw",
+      "attn_x_vnorm"
+    ]
+  },
+  "rows": [
+    {
+      "score": "raw",
+      "mean_n_edges": 75,
+      "mean_drop_S": 3.3589809417724608,
+      "std_drop_S": 1.852251505273331,
+      "mean_drop_R": 0.14476451873779297,
+      "std_drop_R": 0.1503222486503567,
+      "gap": 3.2142164230346677,
+      "n_fail": 0,
+      "n_examples": 10
+    },
+    {
+      "score": "attn_x_vnorm",
+      "mean_n_edges": 67.5,
+      "mean_drop_S": 4.046693897247314,
+      "std_drop_S": 1.9389968371415722,
+      "mean_drop_R": 0.11979442596435547,
+      "std_drop_R": 0.14187124879498478,
+      "gap": 3.9268994712829586,
+      "n_fail": 0,
+      "n_examples": 10
+    }
+  ]
+}
