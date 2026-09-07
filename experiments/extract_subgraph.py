@@ -21,22 +21,17 @@ def extract_subgraph(
     B: int = 3,
     exclude_self: bool = True,
 ) -> list[Edge]:
-    """Top-k incoming walk from answer position `t_star` for `B` hops.
-
-    Matches THESIS.md: keep top-k into the frontier, recurse backward,
-    drop edges that never enter the walk.
-    """
+    """Top-k incoming walk from answer position `t_star` for `B` hops."""
     if k <= 0 or B <= 0:
         return []
 
-    # incoming[query] -> edges ending at that query
     incoming: dict[int, list[Edge]] = {}
     for e in edges:
         if exclude_self and e.key == e.query:
             continue
         incoming.setdefault(e.query, []).append(e)
 
-    for q, lst in incoming.items():
+    for lst in incoming.values():
         lst.sort(key=lambda e: e.score, reverse=True)
 
     selected: dict[tuple[int, int, int, int], Edge] = {}
@@ -50,8 +45,7 @@ def extract_subgraph(
                 continue
             expanded.add(i)
             for e in incoming.get(i, [])[:k]:
-                key = (e.layer, e.head, e.key, e.query)
-                selected[key] = e
+                selected[(e.layer, e.head, e.key, e.query)] = e
                 nxt.add(e.key)
         frontier = nxt - expanded
         if not frontier:
@@ -80,8 +74,10 @@ def extract_attention_mass_only(
 if __name__ == "__main__":
     model = load_model()
     text = "The cat sat. The cat"
-    tokens, _, A = attention_from_forward(model, text)
-    edges = build_routing_graph(A, batch=0)
+    tokens, _, A, Vn = attention_from_forward(model, text)
+    edges = build_routing_graph(
+        A, Vn, mode="attn_x_vnorm", ban_bos=True, exclude_self=True
+    )
     t_star = int(tokens.shape[1] - 1)
     S = extract_subgraph(edges, t_star, k=10, B=3)
     flat = extract_attention_mass_only(edges, t_star, n=len(S))

@@ -29,41 +29,60 @@ class Edge:
         return self.layer, self.head, self.key, self.query, self.score
 
 
+def edge_scores(
+    A: torch.Tensor,
+    Vn: torch.Tensor | None = None,
+    *,
+    mode: str = "raw",
+) -> torch.Tensor:
+    """Score tensor [B, L, H, Q, K].
+
+    mode:
+      - raw: attention mass
+      - attn_x_vnorm: A * ‖v‖ at the key
+    """
+    if mode == "raw":
+        return A
+    if mode == "attn_x_vnorm":
+        if Vn is None:
+            raise ValueError("attn_x_vnorm requires Vn")
+        # A: [B,L,H,Q,K], Vn: [B,L,H,K] → broadcast over Q
+        return A * Vn[:, :, :, None, :]
+    raise ValueError(f"unknown score mode: {mode!r}")
+
+
 def build_routing_graph(
     A: torch.Tensor,
+    Vn: torch.Tensor | None = None,
     *,
     batch: int = 0,
+    mode: str = "raw",
     min_score: float = 0.0,
     exclude_self: bool = False,
+    ban_bos: bool = True,
+    bos_pos: int = 0,
 ) -> list[Edge]:
-    """Turn attention `A` into a list of edges.
+    """Turn attention into edges `(ℓ, h, j → i)`.
 
-    Args:
-        A: [batch, n_layers, n_heads, query, key] from `attention_from_forward`.
-        batch: which batch row to use.
-        min_score: drop edges with score <= this (0 keeps all causal mass).
-        exclude_self: if True, drop j == i edges.
-
-    Returns:
-        Edges `(ℓ, h, j → i)` with score = raw attention A[b, ℓ, h, i, j].
+    ban_bos: drop edges with key == bos_pos (attention sinks into BOS).
     """
-    if A.ndim != 5:
-        raise ValueError(f"expected A [B,L,H,Q,K], got shape {tuple(A.shape)}")
+    scores = edge_scores(A, Vn, mode=mode)
+    if scores.ndim != 5:
+        raise ValueError(f"expected scores [B,L,H,Q,K], got {tuple(scores.shape)}")
 
-    Ab = A[batch].detach().float().cpu()  # [L, H, Q, K]
-    n_layers, n_heads, n_q, n_k = Ab.shape
+    Sb = scores[batch].detach().float().cpu()  # [L, H, Q, K]
+    n_layers, n_heads, n_q, n_k = Sb.shape
     edges: list[Edge] = []
 
     for layer in range(n_layers):
         for head in range(n_heads):
             for query in range(n_q):
-                # causal: key <= query (TransformerLens patterns are already masked)
-                for key in range(n_k):
-                    if key > query:
-                        continue
+                for key in range(min(n_k, query + 1)):
                     if exclude_self and key == query:
                         continue
-                    score = float(Ab[layer, head, query, key])
+                    if ban_bos and key == bos_pos:
+                        continue
+                    score = float(Sb[layer, head, query, key])
                     if score <= min_score:
                         continue
                     edges.append(
@@ -91,12 +110,8 @@ def routing_graph_summary(edges: list[Edge]) -> dict:
 
 if __name__ == "__main__":
     model = load_model()
-    tokens, _, A = attention_from_forward(model, "The cat sat. The cat")
-    edges = build_routing_graph(A, batch=0)
-    summary = routing_graph_summary(edges)
-    print(f"tokens={model.to_str_tokens(tokens[0])}")
-    print(f"A={tuple(A.shape)} → {summary['n_edges']} edges")
-    print(f"score range [{summary['score_min']:.4f}, {summary['score_max']:.4f}]")
-    print("top5:")
-    for e in summary["top5"]:
-        print(f"  L{e['layer']}H{e['head']} {e['key']}→{e['query']} score={e['score']:.4f}")
+    tokens, _, A, Vn = attention_from_forward(model, "The cat sat. The cat")
+    for mode in ("raw", "attn_x_vnorm"):
+        edges = build_routing_graph(A, Vn, mode=mode, ban_bos=True, exclude_self=True)
+        summary = routing_graph_summary(edges)
+        print(f"mode={mode} edges={summary['n_edges']} top={summary['top5'][:3]}")
