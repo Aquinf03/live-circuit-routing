@@ -80,4 +80,5 @@ TODO.md
 # Misc
 *.tmp
 *.bak
+.mplconfig/
 .cache/

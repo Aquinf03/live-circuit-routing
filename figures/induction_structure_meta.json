@@ -1,0 +1,34 @@
+{
+  "example": {
+    "a": "cat",
+    "b": "sat",
+    "n_edges": 60
+  },
+  "recovered_known_heads": {
+    "L4H11": 23,
+    "L5H5": 23,
+    "L5H8": 22,
+    "L6H9": 3,
+    "L7H3": 6,
+    "L7H9": 5
+  },
+  "n_examples": 23,
+  "figures": [
+    "/Users/ashm/work/live/figures/induction_subgraph_example.png",
+    "/Users/ashm/work/live/figures/induction_head_heatmap.png"
+  ],
+  "config": {
+    "model": "gpt2-small",
+    "device": "cpu",
+    "score": "attn_x_vnorm",
+    "k": 15,
+    "B": 4,
+    "ban_bos": true,
+    "exclude_self": true,
+    "n_random": 10,
+    "seed": 0,
+    "limit": 0,
+    "n_examples": 23
+  },
+  "run": "data/results/induction_20260907_105902"
+}

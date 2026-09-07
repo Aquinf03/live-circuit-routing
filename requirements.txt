@@ -1,2 +1,3 @@
 torch
 transformer-lens
+matplotlib
