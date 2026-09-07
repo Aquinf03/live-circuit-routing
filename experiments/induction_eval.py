@@ -14,8 +14,9 @@ if str(_EXPERIMENTS) not in sys.path:
 from ablate import measure_drop
 from extract_subgraph import extract_subgraph
 from induction_data import build_induction_set
-from load_model import attention_from_forward, get_device, load_model
+from load_model import DEFAULT_MODEL, attention_from_forward, get_device, load_model
 from routing_graph import build_routing_graph
+from save_results import edge_to_dict, new_run_dir, save_run
 
 
 def parse_args() -> argparse.Namespace:
@@ -32,6 +33,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--limit", type=int, default=0, help="use first N examples (0=all)")
     p.add_argument("--no-ban-bos", action="store_true", help="keep BOS sink edges")
+    p.add_argument("--no-save", action="store_true", help="skip writing data/results")
     return p.parse_args()
 
 
@@ -47,6 +49,8 @@ def main() -> None:
     drops_S: list[float] = []
     drops_R: list[float] = []
     n_edges: list[int] = []
+    rows: list[dict] = []
+    subgraphs: list[dict] = []
 
     print(
         f"device={device} score={args.score} k={args.k} B={args.B} "
@@ -63,9 +67,9 @@ def main() -> None:
             ban_bos=ban_bos,
             exclude_self=True,
         )
-        # random pool should match extract constraints
         t_star = int(tokens.shape[1] - 1)
         S = extract_subgraph(edges, t_star, k=args.k, B=args.B, exclude_self=True)
+        ex_seed = args.seed + 1000 * i
         result = measure_drop(
             model,
             tokens,
@@ -73,11 +77,40 @@ def main() -> None:
             S,
             all_edges=edges,
             n_random=args.n_random,
-            seed=args.seed + 1000 * i,
+            seed=ex_seed,
         )
         drops_S.append(result["drop_S"])
         drops_R.append(result["drop_random_mean"])
         n_edges.append(result["n_edges"])
+        str_tokens = model.to_str_tokens(tokens[0])
+        rows.append(
+            {
+                "idx": i,
+                "a": ex.a,
+                "b": ex.b,
+                "prefix": ex.prefix,
+                "target": ex.target,
+                "target_id": target_id,
+                "t_star": t_star,
+                "n_edges_S": result["n_edges"],
+                "logit_full": result["logit_full"],
+                "logit_ablate_S": result["logit_ablate_S"],
+                "drop_S": result["drop_S"],
+                "drop_random_mean": result["drop_random_mean"],
+                "drop_random_std": result["drop_random_std"],
+                "seed": ex_seed,
+            }
+        )
+        subgraphs.append(
+            {
+                "idx": i,
+                "a": ex.a,
+                "b": ex.b,
+                "tokens": str_tokens,
+                "t_star": t_star,
+                "edges": [edge_to_dict(e) for e in S],
+            }
+        )
         print(
             f"[{i+1:02d}/{len(examples)}] {ex.a}/{ex.b} "
             f"|S|={result['n_edges']} drop_S={result['drop_S']:+.3f} "
@@ -88,11 +121,46 @@ def main() -> None:
     mean_R = statistics.mean(drops_R)
     std_S = statistics.pstdev(drops_S) if len(drops_S) > 1 else 0.0
     std_R = statistics.pstdev(drops_R) if len(drops_R) > 1 else 0.0
+    gap = mean_S - mean_R
+    summary = {
+        "mean_n_edges": statistics.mean(n_edges),
+        "mean_drop_S": mean_S,
+        "std_drop_S": std_S,
+        "mean_drop_R": mean_R,
+        "std_drop_R": std_R,
+        "gap_S_minus_R": gap,
+        "n_examples": len(examples),
+    }
+
     print("---")
-    print(f"mean |S|={statistics.mean(n_edges):.1f}")
+    print(f"mean |S|={summary['mean_n_edges']:.1f}")
     print(f"mean drop_S={mean_S:+.4f} ± {std_S:.4f}")
     print(f"mean drop_R={mean_R:+.4f} ± {std_R:.4f}")
-    print(f"gap (S - R)={mean_S - mean_R:+.4f}  (want clearly > 0)")
+    print(f"gap (S - R)={gap:+.4f}  (want clearly > 0)")
+
+    if not args.no_save:
+        run_dir = new_run_dir("induction")
+        config = {
+            "model": DEFAULT_MODEL,
+            "device": device,
+            "score": args.score,
+            "k": args.k,
+            "B": args.B,
+            "ban_bos": ban_bos,
+            "exclude_self": True,
+            "n_random": args.n_random,
+            "seed": args.seed,
+            "limit": args.limit,
+            "n_examples": len(examples),
+        }
+        save_run(
+            run_dir,
+            config=config,
+            rows=rows,
+            subgraphs=subgraphs,
+            summary=summary,
+        )
+        print(f"saved → {run_dir}")
 
 
 if __name__ == "__main__":

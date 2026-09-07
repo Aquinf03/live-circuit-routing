@@ -22,7 +22,7 @@ htmlcov/
 data/raw/
 data/cache/
 artifacts/
-runs/
+/runs/
 outputs/
 wandb/
 lightning_logs/
