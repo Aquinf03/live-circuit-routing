@@ -8,22 +8,24 @@ import os
 import sys
 from pathlib import Path
 
+_HELPER = Path(__file__).resolve().parent
+if str(_HELPER) not in sys.path:
+    sys.path.insert(0, str(_HELPER))
+
 # Writable matplotlib cache inside the repo (sandbox / CI friendly).
-os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parents[1] / ".mplconfig"))
+os.environ.setdefault(
+    "MPLCONFIGDIR", str(_HELPER.parents[2] / ".mplconfig")
+)
 os.environ.setdefault("MPLBACKEND", "Agg")
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 
-_EXPERIMENTS = Path(__file__).resolve().parent
-ROOT = _EXPERIMENTS.parent
-if str(_EXPERIMENTS) not in sys.path:
-    sys.path.insert(0, str(_EXPERIMENTS))
-
-from extract_subgraph import extract_subgraph
-from load_model import attention_from_forward, get_device, load_model
-from routing_graph import build_routing_graph
+from paths import RESULTS_FIGURES, RESULTS_RUNS, ROOT  # noqa: E402
+from extract_subgraph import extract_subgraph  # noqa: E402
+from load_model import attention_from_forward, get_device, load_model  # noqa: E402
+from routing_graph import build_routing_graph  # noqa: E402
 
 # Commonly cited GPT-2 Small heads for induction (Olsson et al. / TL community).
 # Format: (layer, head)
@@ -208,10 +210,9 @@ def heads_from_subgraphs(subgraphs: list[dict], n_layers: int, n_heads: int) -> 
 
 
 def load_latest_run() -> Path | None:
-    root = ROOT / "results" / "runs"
-    if not root.exists():
+    if not RESULTS_RUNS.exists():
         return None
-    runs = sorted(root.glob("induction_*"), key=lambda p: p.name)
+    runs = sorted(RESULTS_RUNS.glob("induction_*"), key=lambda p: p.name)
     return runs[-1] if runs else None
 
 
@@ -228,7 +229,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    fig_dir = ROOT / "results" / "figures"
+    fig_dir = RESULTS_FIGURES
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     run_dir = Path(args.run) if args.run else load_latest_run()

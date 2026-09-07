@@ -1,4 +1,4 @@
-"""Load GPT-2 Small (v1) via TransformerLens and read attention (+ values)."""
+"""Load models via TransformerLens and read attention (+ values)."""
 
 from __future__ import annotations
 

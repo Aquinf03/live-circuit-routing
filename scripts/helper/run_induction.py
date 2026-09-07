@@ -1,28 +1,27 @@
-"""Induction eval: extract live subgraph, ablate, average drop vs random."""
+"""Shared induction eval runner (used by test-gpt2-small / test-gpt2-medium / …)."""
 
 from __future__ import annotations
 
 import argparse
 import statistics
-import sys
-from pathlib import Path
-
-_EXPERIMENTS = Path(__file__).resolve().parent
-if str(_EXPERIMENTS) not in sys.path:
-    sys.path.insert(0, str(_EXPERIMENTS))
+from typing import Sequence
 
 from ablate import measure_drop
 from extract_subgraph import extract_subgraph
 from induction_data import build_induction_set
-from load_model import DEFAULT_MODEL, attention_from_forward, get_device, load_model
+from load_model import attention_from_forward, get_device, load_model
+from paths import RESULTS_RUNS, ensure_helper_imports
 from routing_graph import build_routing_graph
 from save_results import edge_to_dict, new_run_dir, save_run
 
+ensure_helper_imports()
 
-def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Live routing-graph induction eval")
-    p.add_argument("--k", type=int, default=10, help="top-k incoming edges per hop")
-    p.add_argument("--B", type=int, default=3, help="backward hops from t*")
+
+def build_arg_parser(default_model: str) -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(description=f"Live routing-graph induction eval ({default_model})")
+    p.add_argument("--model", type=str, default=default_model)
+    p.add_argument("--k", type=int, default=15, help="top-k incoming edges per hop")
+    p.add_argument("--B", type=int, default=4, help="backward hops from t*")
     p.add_argument(
         "--score",
         choices=("raw", "attn_x_vnorm"),
@@ -34,13 +33,19 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--limit", type=int, default=0, help="use first N examples (0=all)")
     p.add_argument("--no-ban-bos", action="store_true", help="keep BOS sink edges")
     p.add_argument("--no-save", action="store_true", help="skip writing results/runs")
-    return p.parse_args()
+    p.add_argument(
+        "--tag",
+        type=str,
+        default="",
+        help="results folder tag prefix (default: induction_<model>)",
+    )
+    return p
 
 
-def main() -> None:
-    args = parse_args()
+def run_induction_eval(argv: Sequence[str] | None, *, default_model: str) -> None:
+    args = build_arg_parser(default_model).parse_args(argv)
     device = "cpu" if get_device() == "mps" else get_device()
-    model = load_model(device=device)
+    model = load_model(name=args.model, device=device)
     examples = build_induction_set(model)
     if args.limit > 0:
         examples = examples[: args.limit]
@@ -53,7 +58,7 @@ def main() -> None:
     subgraphs: list[dict] = []
 
     print(
-        f"device={device} score={args.score} k={args.k} B={args.B} "
+        f"model={args.model} device={device} score={args.score} k={args.k} B={args.B} "
         f"ban_bos={ban_bos} n_examples={len(examples)} n_random={args.n_random}"
     )
 
@@ -139,9 +144,10 @@ def main() -> None:
     print(f"gap (S - R)={gap:+.4f}  (want clearly > 0)")
 
     if not args.no_save:
-        run_dir = new_run_dir("induction")
+        tag = args.tag or f"induction_{args.model.replace('/', '-')}"
+        run_dir = new_run_dir(tag)
         config = {
-            "model": DEFAULT_MODEL,
+            "model": args.model,
             "device": device,
             "score": args.score,
             "k": args.k,
@@ -161,7 +167,4 @@ def main() -> None:
             summary=summary,
         )
         print(f"saved → {run_dir}")
-
-
-if __name__ == "__main__":
-    main()
+        print(f"(runs root: {RESULTS_RUNS})")

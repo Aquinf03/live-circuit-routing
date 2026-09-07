@@ -4,19 +4,22 @@ from __future__ import annotations
 
 import csv
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from routing_graph import Edge
+_HELPER = Path(__file__).resolve().parent
+if str(_HELPER) not in sys.path:
+    sys.path.insert(0, str(_HELPER))
 
-ROOT = Path(__file__).resolve().parents[1]
-RESULTS_DIR = ROOT / "results" / "runs"
+from paths import RESULTS_RUNS  # noqa: E402
+from routing_graph import Edge  # noqa: E402
 
 
 def new_run_dir(tag: str = "induction") -> Path:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    path = RESULTS_DIR / f"{tag}_{stamp}"
+    path = RESULTS_RUNS / f"{tag}_{stamp}"
     path.mkdir(parents=True, exist_ok=True)
     return path
 

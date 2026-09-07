@@ -1,7 +1,7 @@
 """Build causal-vs-random summary table from a saved induction run.
 
 Usage (you run this):
-  python scripts/make_table.py --run results/runs/induction_20260907_105902
+  python scripts/helper/make_table.py --run results/runs/induction_20260907_105902
 """
 
 from __future__ import annotations
@@ -12,22 +12,26 @@ import json
 import sys
 from pathlib import Path
 
-_SCRIPTS = Path(__file__).resolve().parent
-ROOT = _SCRIPTS.parent
-if str(_SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(_SCRIPTS))
+_HELPER = Path(__file__).resolve().parent
+if str(_HELPER) not in sys.path:
+    sys.path.insert(0, str(_HELPER))
+
+from paths import RESULTS_FIGURES, RESULTS_RUNS  # noqa: E402
 
 
 def latest_run() -> Path | None:
-    root = ROOT / "results" / "runs"
-    runs = sorted(root.glob("induction_*"), key=lambda p: p.name) if root.exists() else []
+    runs = (
+        sorted(RESULTS_RUNS.glob("induction_*"), key=lambda p: p.name)
+        if RESULTS_RUNS.exists()
+        else []
+    )
     return runs[-1] if runs else None
 
 
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--run", type=str, default="")
-    p.add_argument("--out-dir", type=str, default=str(ROOT / "results" / "figures"))
+    p.add_argument("--out-dir", type=str, default=str(RESULTS_FIGURES))
     args = p.parse_args()
 
     run_dir = Path(args.run) if args.run else latest_run()
@@ -42,7 +46,6 @@ def main() -> None:
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # CSV summary (paper table one-liner)
     csv_path = out_dir / "table_causal_vs_random.csv"
     with csv_path.open("w", newline="") as f:
         w = csv.DictWriter(
@@ -86,10 +89,9 @@ def main() -> None:
             }
         )
 
-    # Markdown table
     md_path = out_dir / "table_causal_vs_random.md"
     lines = [
-        "# Task 1 — Causal verification vs random control (GPT-2 Small)",
+        f"# Causal verification vs random control ({config.get('model', '')})",
         "",
         f"Source run: `{run_dir}`",
         f"Protocol: induction, score=`{config.get('score')}`, k={config.get('k')}, "
