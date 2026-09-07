@@ -1,0 +1,400 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{times}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{url}
+
+\begin{document}
+
+\thispagestyle{empty}
+\vspace*{0.5cm}
+
+\noindent\rule{\textwidth}{2pt}
+
+\vspace{0.45cm}
+\begin{center}
+  {\LARGE\bfseries Attention as a Routing Graph:\\[0.15em]
+  Live Circuit Extraction from a Single Forward Pass}
+\end{center}
+\vspace{0.35cm}
+
+\noindent\rule{\textwidth}{0.8pt}
+
+\vspace{0.6cm}
+
+\begin{center}
+\begin{minipage}[t]{0.3\textwidth}
+\centering
+{\bfseries Ash Manvi}\par
+Aquin Labs\par
+{\ttfamily ash@aquin.app}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.3\textwidth}
+\centering
+{\bfseries Samreena Tajreen}\par
+Aquin Labs\par
+{\ttfamily samreena@aquin.app}
+\end{minipage}
+\end{center}
+
+\vspace{0.55cm}
+
+\begin{center}
+  {\Large\bfseries Abstract}
+\end{center}
+
+\begin{quote}
+Mechanistic interpretability often recovers circuits by many causal
+interventions. We ask whether a small subgraph of the \emph{live} attention
+routing graph---built from one forward pass---already isolates causally
+relevant structure on known tasks. Nodes are token positions; edges are
+attention routes \((\ell,h,j\!\to\!i)\) scored by attention \(\times\) value
+norm. A short backward top-\(k\) walk from the answer position yields candidate
+edges \(S\); we verify by zeroing those weights (with renormalization) and
+comparing the task-metric drop to size-matched random edges. On induction
+heads, GPT-2 Small yields mean gap \(+3.55\)\,nats (\(n{=}23\)); GPT-2 Medium
+and Pythia-410M reproduce the sign (\({+}1.85\), \({+}1.78\)). The same
+protocol transfers to IOI on GPT-2 Small (gap \({+}5.17\)). Live extract uses
+one forward versus \(\sim\)145 for a head-patch sweep
+(\(\sim\)106\(\times\) wall-clock). Gaps remain positive across templates,
+moderate lengths, score variants, and \(k\!\ge\!10\); late-only layers fail.
+Failures are rare (\(\sim\)5\%) and concentrated on larger models; recovered
+sets overlap known heads incompletely. We claim a cheap routing sketch with
+causal support---not completeness or feature semantics. We release the
+implementation and evaluation artifacts.
+\end{quote}
+
+\section{Introduction}
+
+Attention implements communication channels between positions
+\cite{vaswani2017,elhage2021}.
+On narrow tasks such as induction \cite{olsson2022} and indirect object
+identification (IOI) \cite{wang2023}, those channels form sparse circuits that
+heavier methods---activation patching, ACDC, attribution graphs---can recover
+at substantial cost \cite{conmy2023,heimersheim2024,ferrando2024,ameisen2025}.
+
+The scientific risk is to treat every high-attention edge as mechanism, or
+every mechanistic claim as requiring a full offline search.
+Numerous efforts have since automated circuit discovery, while also improving
+attribution and feature-level graphs
+\cite{conmy2023,ferrando2024,marks2025,syed2023}.
+In most such settings, however, the candidate set is built by many
+interventions or by a separately trained dictionary, not by reading the
+attention routing graph of a single forward as a first-class object.
+
+In this work we propose extracting a live circuit sketch directly from that
+routing graph. Nodes are token positions; edges are attention routes
+\((\ell,h,j\!\to\!i)\) with head identity preserved. Default score is
+attention \(\times\) value norm. A short top-\(k\) walk of depth \(B\) from
+the answer token yields \(S\); identity of the sketch is this extract rule, not
+a verbal head name. We verify with edge ablation versus size-matched random
+controls. On GPT-2 Small / Medium and Pythia-410M, induction gaps are positive;
+the same protocol transfers to IOI on GPT-2 Small; live extract is roughly two
+orders of magnitude cheaper in forwards than a head-patch sweep.
+
+\section{Method}
+
+\subsection{Routing graph}
+Fix a prompt with \(T\) positions and root \(t^\star\) (answer / last token).
+One forward yields attention \(A[\ell,h,i,j]\) and values at keys.
+An edge \((\ell,h,j\!\to\!i)\) means head \(h\) at layer \(\ell\) routes from
+key \(j\) to query \(i\). We keep all layers and heads, ban BOS keys, and
+exclude self-edges. Default score:
+\[
+s(\ell,h,j\!\to\!i)
+=
+A[\ell,h,i,j]\,\bigl\|V[\ell,h,j]\bigr\|_2 .
+\]
+Raw attention is a secondary score. Identity is this weight of routing, not a
+learned dictionary atom.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig1_pipeline.png}
+  \caption{Live circuit extraction pipeline (VisualTorch graph view of the
+  four stages). Input $\to$ single forward $\to$ routing graph $\to$ top-$k$
+  walk $\to$ verify vs.\ matched random.}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Extract}
+Let the frontier be \(\{t^\star\}\). For hop \(1..B\), take the top-\(k\)
+incoming scored edges to each frontier query, add them to \(S\), and expand to
+their key positions. Defaults: \(k{=}15\), \(B{=}4\). Threshold \(\tau\) is an
+alternative cut (same walk, score floor).
+
+\subsection{Verify}
+Metric \(m\): target-token logit (induction) or
+\(\mathrm{logit}(\mathrm{IO})-\mathrm{logit}(\mathrm{S})\) (IOI).
+Ablate by zeroing attention on edges in \(S\) and renormalizing over remaining
+keys. Control: sample \(|S|\) valid causal edges uniformly; repeat \(R\) draws;
+report mean drop.
+\[
+\Delta_S = m_{\mathrm{full}} - m_{\mathrm{ablate}(S)},
+\qquad
+\mathrm{gap} = \Delta_S - \mathbb{E}[\Delta_R] .
+\]
+Success: \(\mathrm{gap}>0\) (extracted edges hurt the behavior more than
+random).
+
+\subsection{Pass criteria}
+An example is accepted when \(\Delta_S > \Delta_R\). A model--task cell is
+reported by mean \(\Delta_S\), mean \(\Delta_R\), gap, and fail count
+(\(\Delta_S\le\Delta_R\)). Cost compares live extract (1 forward) and
+live+verify (\(1+1+R\) forwards with \(R\) random ablations) to a full
+head-patch sweep (clean run + one forward per head).
+
+\section{Experiments}
+
+\subsection{Setup}
+Models: GPT-2 Small (primary), GPT-2 Medium, Pythia-410M
+\cite{biderman2023}. Tasks: induction templates
+\texttt{The A B. The A}$\,\to\,$\texttt{B} with single-token pairs
+(\(n{=}23\)); IOI dual-name templates on GPT-2 Small (\(n{=}23\)).
+Protocol: score \(\mathrm{attn}\times\|v\|\), \(k{=}15\), \(B{=}4\), BOS banned,
+\(R{=}10\), seed \(0\). Attention maps are read from a standard
+transformer hook library \cite{nanda2022}.
+Artifacts for each run record seeds, prompts, thresholds, and metrics.
+
+\subsection{Causal gap on induction and IOI}
+Table~\ref{tab:main} summarizes mean drops. On GPT-2 Small induction,
+\(\Delta_S{=}{+}3.66\) vs.\ \(\Delta_R{=}{+}0.11\) (gap \({+}3.55\)); every
+example beats random (\(0/23\) fails). Medium and Pythia reproduce the sign
+with smaller absolute gaps. IOI on Small is not a one-task artifact: gap
+\({+}5.17\), again \(0/23\) fails.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.92\linewidth]{figures/fig3_causal.png}
+  \caption{Mean logit drop from ablating extracted edges \(S\) versus
+  size-matched random edges \(R\). Extracted sets hurt the target far more
+  than random across induction (three models) and IOI (GPT-2 Small).}
+  \label{fig:causal}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \caption{Causal verification: mean logit drop from ablating extracted edges
+  \(S\) vs.\ size-matched random edges \(R\). Higher drop $=$ more causal.
+  Gap $=\Delta_S-\Delta_R$.}
+  \label{tab:main}
+  \setlength{\tabcolsep}{5pt}
+  \begin{tabular}{@{}llrrrcc@{}}
+    \toprule
+    Task & Model & \(n\) & \(|S|\) & \(\Delta_S\) & \(\Delta_R\) & gap \\
+    \midrule
+    Induction & GPT-2 Small  & 23 & 68.5 & \(+3.66{\pm}1.78\) & \(+0.11{\pm}0.12\) & \(\mathbf{+3.55}\) \\
+    Induction & GPT-2 Medium & 23 & 60.7 & \(+1.85{\pm}1.92\) & \(+0.00{\pm}0.07\) & \(\mathbf{+1.85}\) \\
+    Induction & Pythia-410M  & 23 & 59.3 & \(+1.81{\pm}1.33\) & \(+0.03{\pm}0.12\) & \(\mathbf{+1.78}\) \\
+    IOI       & GPT-2 Small  & 23 & 195  & \(+5.27{\pm}1.92\) & \(+0.10{\pm}0.27\) & \(\mathbf{+5.17}\) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Cost vs.\ head-patching}
+On five Small induction prompts (CPU), live extract averages \(0.056\)\,s /
+1~forward; live+verify (\(R{=}10\)) \(0.48\)\,s / 12~forwards; full head-patch
+\(5.94\)\,s / 145~forwards (\(\approx\)106\(\times\) wall-clock, \(145\times\)
+forwards vs.\ extract alone). Edge-ACDC is strictly more expensive; the head
+sweep is a lower bound on patching cost.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/fig4_cost.png}
+  \caption{Cost versus head-patching on GPT-2 Small induction (\(n{=}5\)).
+  Left: forwards per example (log scale). Right: CPU wall-clock.}
+  \label{fig:cost}
+\end{figure}
+
+\subsection{Structure recovery is partial}
+On Small induction, extracted sets consistently include known previous-token /
+induction heads (L4H11, L5H5, L5H8 in nearly all \(23\) examples) but sparsely
+hit later named heads (e.g.\ L6H9 in \(3/23\); L6H10 in \(0/23\)). Causal
+success therefore indicates overlap with a sufficient path, not complete
+textbook recovery.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig2_subgraph.png}
+  \caption{Example extracted routing subgraph on induction
+  (\texttt{The cat sat. The cat} $\to$ \texttt{sat}). Arcs are attention
+  routes into later positions; known prev-token / induction heads are
+  highlighted when they dominate a pair.}
+  \label{fig:subgraph}
+\end{figure}
+
+\subsection{Failure cases}
+Across \(92\) induction+IOI example-runs, \(5\) causal failures
+(\(\sim\)5\%), all on Medium/Pythia induction (ablation helps the target or
+falls below random). Small induction and IOI are clean. Residual modes:
+distractor high-score routes, incomplete multi-hop coverage under fixed \(B\),
+and attention mass that is not causation (mitigated by BOS ban and
+\(\mathrm{attn}\times\|v\|\)).
+
+\subsection{Ablations}
+All on GPT-2 Small induction (\(n{\le}10\) unless noted).
+
+\paragraph{Top-\(k\) / \(\tau\).}
+\(k{=}5\) under-extracts (gap \({+}0.04\), \(4/10\) fails); \(k{\ge}10\) is
+solid; default \(k{=}15\) has \(0\) fails (gap \({+}3.93\) on this slice).
+\(\tau{=}5\) over-prunes (gap flips negative); moderate
+\(\tau\in[0.5,2]\) remains positive.
+
+\paragraph{Layer bands.}
+All layers \(\approx\) early (\(0\)--\(3\)) \(\gg\) mid (\(4\)--\(7\)); late
+(\(8\)--\(11\)) fails (gap \({-}0.19\), \(6/10\) fails). Restricting to the
+textbook induction band alone under-extracts causal mass relative to all-layer
+routing.
+
+\paragraph{Scores.}
+Raw attention gap \({+}3.21\); \(\mathrm{attn}\times\|v\|\) gap \({+}3.93\)
+(both \(0\) fails). We keep \(\mathrm{attn}\times\|v\|\) as default.
+
+\paragraph{Template / length.}
+Gaps stay positive on \texttt{the\_dot}, \texttt{bare}, \texttt{then},
+\texttt{yesterday} (worst \({+}2.19\)) and with \(0\)--\(4\) filler sentences
+before the pattern (worst \({+}2.57\)). One fail each on \texttt{bare} and
+one-filler; not a single-template artifact.
+
+\subsection{Aggregate verdict}
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Cell & Result \\
+\midrule
+Induction GPT-2 Small & gap \(\mathbf{+3.55}\), fails \(0/23\) \\
+Induction GPT-2 Medium & gap \(\mathbf{+1.85}\), fails \(2/23\) \\
+Induction Pythia-410M & gap \(\mathbf{+1.78}\), fails \(3/23\) \\
+IOI GPT-2 Small & gap \(\mathbf{+5.17}\), fails \(0/23\) \\
+Head-patch / live extract & \(\mathbf{145\times}\) forwards,
+  \(\sim\mathbf{106\times}\) wall \\
+Ablations (\(k{\ge}10\), scores, templates) & gap \(>0\) \\
+Late-only layers & fail \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A live attention routing subgraph, extracted in one forward and checked with
+cheap ablations, beats matched random on induction across three models and on
+IOI for GPT-2 Small, once BOS is banned and score uses
+\(\mathrm{attn}\times\|v\|\).
+
+\section{Discussion}
+
+The measurement stack is the durable part of this work. Size-matched random
+ablation separates routing extract from attention mass alone under a fixed
+\(|S|\) budget. Cost is honest: one forward for the sketch, a small constant
+for verify, versus a lower-bound head sweep. Partial head recovery is reported
+rather than claimed as complete circuit identity.
+
+Novelty is thinner than a full replacement for ACDC or attribution graphs
+\cite{conmy2023,ferrando2024,ameisen2025,marks2025}. We do not claim
+human-readable feature names, and we do not claim to replace sparse feature
+circuits for concept discovery. The wedge is routing-first extract, a negative
+result about late-only layers and over-tight \(\tau\), template/length
+robustness, and a reproducible verify suite on known tasks.
+
+Scope stays sharp. Verification uses attention zero+renorm, not path patching.
+All primary numbers are for GPT-2 Small / Medium and Pythia-410M on synthetic
+induction and IOI prompts.
+
+\section{Limitations}
+
+This study uses small open models and two known tasks; results may not transfer
+to frontier models or open-ended behavior. Extracted \(S\) mixes true circuit
+edges with high-score distractors; we do not claim necessity or monosemanticity
+of every edge. \(|S|\) grows with prompt length; fixed \(k,B\) can miss deeper
+composition. We do not train SAEs or explain feature semantics.
+
+\section{Conclusion}
+
+We extract a live attention routing subgraph \(S\) from one forward and score
+it with edge ablation versus size-matched random controls. On induction, GPT-2
+Small / Medium and Pythia-410M show positive gaps; on IOI, GPT-2 Small gap is
+\({+}5.17\). Live extract is \(\sim\)145\(\times\) fewer forwards than a
+head-patch sweep. Ablations support \(k{\ge}10\),
+\(\mathrm{attn}\times\|v\|\), and all-layer routing; late-only layers fail.
+We release the implementation and evaluation artifacts, with sketch identity
+defined as the routing extract rule itself.
+
+\section*{Acknowledgments}
+This work was produced at Aquin Labs. GPT-2 checkpoints are released by OpenAI
+under their model terms; Pythia by EleutherAI. Accept applicable licenses before
+downloading weights.
+
+\begin{thebibliography}{99}
+
+\bibitem{vaswani2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+Attention is all you need.
+In \emph{Advances in Neural Information Processing Systems}, 2017.
+
+\bibitem{elhage2021}
+Nelson Elhage, Neel Nanda, Catherine Olsson, et~al.
+A mathematical framework for transformer circuits.
+\emph{Transformer Circuits Thread}, 2021.
+
+\bibitem{olsson2022}
+Catherine Olsson, Nelson Elhage, Neel Nanda, et~al.
+In-context learning and induction heads.
+\emph{Transformer Circuits Thread}, 2022.
+
+\bibitem{wang2023}
+Kevin Wang, Alexandre Variengien, Arthur Conmy, Buck Shlegeris, and
+Jacob Steinhardt.
+Interpretability in the wild: a circuit for indirect object identification
+in GPT-2 Small.
+In \emph{International Conference on Learning Representations}, 2023.
+
+\bibitem{conmy2023}
+Arthur Conmy, Augustine Mavor-Parker, Aengus Lynch, Stefan Heimersheim, and
+Adri{\`a} Garriga-Alonso.
+Towards automated circuit discovery for mechanistic interpretability.
+In \emph{Advances in Neural Information Processing Systems}, 2023.
+
+\bibitem{heimersheim2024}
+Stefan Heimersheim and Neel Nanda.
+How to use and interpret activation patching.
+arXiv preprint arXiv:2404.15255, 2024.
+
+\bibitem{ferrando2024}
+Javier Ferrando and Elena Voita.
+Information flow routes: automatically interpreting language models at scale.
+In \emph{Proceedings of EMNLP}, 2024.
+
+\bibitem{ameisen2025}
+Emmanuel Ameisen, Jack Lindsey, Adam Pearce, et~al.
+Circuit tracing: revealing computational graphs in language models.
+\emph{Transformer Circuits Thread}, 2025.
+
+\bibitem{marks2025}
+Samuel Marks, Can Rager, Eric~J Michaud, Yonatan Belinkov, David Bau, and
+Aaron Mueller.
+Sparse feature circuits: discovering and editing interpretable causal graphs
+in language models.
+In \emph{International Conference on Learning Representations}, 2025.
+
+\bibitem{syed2023}
+Aaquib Syed, Can Rager, and Arthur Conmy.
+Attribution patching outperforms automated circuit discovery.
+arXiv preprint arXiv:2310.10348, 2023.
+
+\bibitem{biderman2023}
+Stella Biderman, Hailey Schoelkopf, Quentin Anthony, et~al.
+Pythia: a suite for analyzing large language models across training and
+scaling.
+In \emph{International Conference on Machine Learning}, 2023.
+
+\bibitem{nanda2022}
+Neel Nanda and Joseph Bloom.
+TransformerLens.
+\url{https://github.com/TransformerLensOrg/TransformerLens}, 2022.
+
+\end{thebibliography}
+
+\end{document}

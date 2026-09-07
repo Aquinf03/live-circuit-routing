@@ -18,7 +18,7 @@
 
 **Edges.** A directed edge `(ℓ, h, j → i)` means: at layer `ℓ`, head `h`, query position `i` attended to key position `j` (information routed from `j` to `i`). Use **all layers and all heads**; keep `(ℓ, h)` identity on every edge. Do **not** mean/max-pool heads for the main method (induction/IOI need head identity). Mean/max across heads is only an ablation variant.
 
-**Edge score.** Main score = **raw attention** `A[ℓ, h, i, j]` (routing-first, free from one forward). Report **attn × ‖value‖** as a secondary score (still one forward; closer to “how much was written”). Do **not** use gradient / IFR-style attribution as the main score (that collapses into the methods we claim to avoid).
+**Edge score.** Main score = **attn × ‖value‖** `A[ℓ, h, i, j] · ‖V[ℓ, h, j]‖` (one forward; closer to “how much was written”). Report **raw attention** as a secondary score. Do **not** use gradient / IFR-style attribution as the main score (that collapses into the methods we claim to avoid).
 
 **Subgraph extract rule.** Root = answer position `t*`. Keep the **top-k** incoming edges to `t*` by score (primary). Recurse backward up to **B** hops: for each newly included key position, again keep its top-k incoming edges. Drop edges that cannot reach `t*` under this expansion. Threshold `τ` is the ablation alternative to top-k (same extract, different cut). Default starting point: `k` small (e.g. 5–20), `B` small (e.g. 2–4).
 
@@ -29,7 +29,7 @@
 ```
 function live_circuit(model, tokens, t*, k, B):
   A = attention_from_forward(model, tokens)          # all layers, heads
-  score[ℓ,h,i,j] = A[ℓ,h,i,j]                        # raw attn (main)
+  score[ℓ,h,i,j] = A[ℓ,h,i,j] * ||V[ℓ,h,j]||         # attn×‖v‖ (main)
   S = {}                                             # selected edges
   frontier = {t*}
   for hop in 1..B:

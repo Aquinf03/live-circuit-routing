@@ -1,3 +1,4 @@
 torch
 transformer-lens
-matplotlib
+visualtorch
+pillow
