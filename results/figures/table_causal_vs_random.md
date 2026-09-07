@@ -1,6 +1,6 @@
 # Task 1 — Causal verification vs random control (GPT-2 Small)
 
-Source run: `data/results/induction_20260907_105902`  
+Source run: `results/runs/induction_20260907_105902`  
 Protocol: induction `The A B. The A → B`, score=`attn_x_vnorm`, k=15, B=4, ban_bos=True, n_random=10, seed=0
 
 ## Summary
@@ -40,4 +40,4 @@ Success criterion: drop_S ≫ drop_R.
 | 22 | wind / blew | 75 | +3.086 | +0.238 ± 0.307 |
 | 23 | door / opened | 75 | +1.047 | −0.027 ± 0.151 |
 
-Raw rows: `data/results/induction_20260907_105902/metrics.csv`
+Raw rows: `results/runs/induction_20260907_105902/metrics.csv`

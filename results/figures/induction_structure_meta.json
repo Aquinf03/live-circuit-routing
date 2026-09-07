@@ -14,8 +14,8 @@
   },
   "n_examples": 23,
   "figures": [
-    "/Users/ashm/work/live/figures/induction_subgraph_example.png",
-    "/Users/ashm/work/live/figures/induction_head_heatmap.png"
+    "results/figures/induction_subgraph_example.png",
+    "results/figures/induction_head_heatmap.png"
   ],
   "config": {
     "model": "gpt2-small",
@@ -30,5 +30,5 @@
     "limit": 0,
     "n_examples": 23
   },
-  "run": "data/results/induction_20260907_105902"
+  "run": "results/runs/induction_20260907_105902"
 }

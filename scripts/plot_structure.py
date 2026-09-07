@@ -208,7 +208,7 @@ def heads_from_subgraphs(subgraphs: list[dict], n_layers: int, n_heads: int) -> 
 
 
 def load_latest_run() -> Path | None:
-    root = ROOT / "data" / "results"
+    root = ROOT / "results" / "runs"
     if not root.exists():
         return None
     runs = sorted(root.glob("induction_*"), key=lambda p: p.name)
@@ -217,7 +217,7 @@ def load_latest_run() -> Path | None:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
-    p.add_argument("--run", type=str, default="", help="path to data/results/induction_*")
+    p.add_argument("--run", type=str, default="", help="path to results/runs/induction_*")
     p.add_argument("--example-idx", type=int, default=0, help="which subgraph to draw")
     p.add_argument("--k", type=int, default=15)
     p.add_argument("--B", type=int, default=4)
@@ -228,7 +228,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    fig_dir = ROOT / "figures"
+    fig_dir = ROOT / "results" / "figures"
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     run_dir = Path(args.run) if args.run else load_latest_run()

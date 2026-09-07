@@ -1,7 +1,7 @@
 """Build causal-vs-random summary table from a saved induction run.
 
 Usage (you run this):
-  python experiments/make_table.py --run data/results/induction_20260907_105902
+  python scripts/make_table.py --run results/runs/induction_20260907_105902
 """
 
 from __future__ import annotations
@@ -9,18 +9,17 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import statistics
 import sys
 from pathlib import Path
 
-_EXPERIMENTS = Path(__file__).resolve().parent
-ROOT = _EXPERIMENTS.parent
-if str(_EXPERIMENTS) not in sys.path:
-    sys.path.insert(0, str(_EXPERIMENTS))
+_SCRIPTS = Path(__file__).resolve().parent
+ROOT = _SCRIPTS.parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
 
 
 def latest_run() -> Path | None:
-    root = ROOT / "data" / "results"
+    root = ROOT / "results" / "runs"
     runs = sorted(root.glob("induction_*"), key=lambda p: p.name) if root.exists() else []
     return runs[-1] if runs else None
 
@@ -28,12 +27,12 @@ def latest_run() -> Path | None:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--run", type=str, default="")
-    p.add_argument("--out-dir", type=str, default=str(ROOT / "figures"))
+    p.add_argument("--out-dir", type=str, default=str(ROOT / "results" / "figures"))
     args = p.parse_args()
 
     run_dir = Path(args.run) if args.run else latest_run()
     if run_dir is None or not (run_dir / "metrics.csv").exists():
-        raise SystemExit("no run found; pass --run data/results/induction_...")
+        raise SystemExit("no run found; pass --run results/runs/induction_...")
 
     config = json.loads((run_dir / "config.json").read_text())
     summary = json.loads((run_dir / "summary.json").read_text())

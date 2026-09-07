@@ -33,7 +33,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--limit", type=int, default=0, help="use first N examples (0=all)")
     p.add_argument("--no-ban-bos", action="store_true", help="keep BOS sink edges")
-    p.add_argument("--no-save", action="store_true", help="skip writing data/results")
+    p.add_argument("--no-save", action="store_true", help="skip writing results/runs")
     return p.parse_args()
 
 

@@ -11,7 +11,7 @@ from typing import Any
 from routing_graph import Edge
 
 ROOT = Path(__file__).resolve().parents[1]
-RESULTS_DIR = ROOT / "data" / "results"
+RESULTS_DIR = ROOT / "results" / "runs"
 
 
 def new_run_dir(tag: str = "induction") -> Path:
