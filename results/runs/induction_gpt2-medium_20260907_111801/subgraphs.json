@@ -1,0 +1,2187 @@
+[
+  {
+    "idx": 0,
+    "a": "cat",
+    "b": "sat",
+    "tokens": [
+      "<|endoftext|>",
+      "The",
+      " cat",
+      " sat",
+      ".",
+      " The",
+      " cat"
+    ],
+    "t_star": 6,
+    "edges": [
+      {
+        "layer": 17,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 8.756538391113281
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 4,
+        "query": 6,
+        "score": 8.197051048278809
+      },
+      {
+        "layer": 19,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 7.929149150848389
+      },
+      {
+        "layer": 12,
+        "head": 13,
+        "key": 3,
+        "query": 6,
+        "score": 6.975956916809082
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 4,
+        "query": 6,
+        "score": 6.581168174743652
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 4,
+        "query": 6,
+        "score": 6.00776481628418
+      },
+      {
+        "layer": 15,
+        "head": 7,
+        "key": 2,
+        "query": 6,
+        "score": 5.9711527824401855
+      },
+      {
+        "layer": 17,
+        "head": 12,
+        "key": 3,
+        "query": 6,
+        "score": 5.933426380157471
+      },
+      {
+        "layer": 6,
+        "head": 15,
+        "key": 3,
+        "query": 6,
+        "score": 5.899269104003906
+      },
+      {
+        "layer": 12,
+        "head": 3,
+        "key": 3,
+        "query": 6,
+        "score": 5.684930324554443
+      },
+      {
+        "layer": 5,
+        "head": 8,
+        "key": 3,
+        "query": 6,
+        "score": 5.208374977111816
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "key": 2,
+        "query": 6,
+        "score": 5.065428256988525
+      },
+      {
+        "layer": 19,
+        "head": 0,
+        "key": 2,
+        "query": 6,
+        "score": 4.876237869262695
+      },
+      {
+        "layer": 11,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 4.575032711029053
+      },
+      {
+        "layer": 10,
+        "head": 2,
+        "key": 4,
+        "query": 6,
+        "score": 4.472609043121338
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 12.833084106445312
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 6.757734298706055
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 3.7632269859313965
+      },
+      {
+        "layer": 18,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 2.952765464782715
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 1,
+        "query": 2,
+        "score": 2.4469454288482666
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.3427295684814453
+      },
+      {
+        "layer": 2,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.300755023956299
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 1,
+        "query": 2,
+        "score": 2.274164915084839
+      },
+      {
+        "layer": 2,
+        "head": 10,
+        "key": 1,
+        "query": 2,
+        "score": 2.2485105991363525
+      },
+      {
+        "layer": 17,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.1102941036224365
+      },
+      {
+        "layer": 4,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.0849149227142334
+      },
+      {
+        "layer": 13,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 1.9120029211044312
+      },
+      {
+        "layer": 14,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 1.7303279638290405
+      },
+      {
+        "layer": 20,
+        "head": 1,
+        "key": 1,
+        "query": 2,
+        "score": 1.6835919618606567
+      },
+      {
+        "layer": 4,
+        "head": 9,
+        "key": 1,
+        "query": 2,
+        "score": 1.4550949335098267
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 3,
+        "score": 11.825895309448242
+      },
+      {
+        "layer": 15,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 7.990602016448975
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 3,
+        "score": 5.748842239379883
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 5.303534984588623
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 4.488739967346191
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 3,
+        "score": 4.368095397949219
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 4.220468521118164
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 4.162384510040283
+      },
+      {
+        "layer": 4,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.118443012237549
+      },
+      {
+        "layer": 16,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.945934772491455
+      },
+      {
+        "layer": 12,
+        "head": 14,
+        "key": 2,
+        "query": 3,
+        "score": 3.9129042625427246
+      },
+      {
+        "layer": 4,
+        "head": 8,
+        "key": 2,
+        "query": 3,
+        "score": 3.8413093090057373
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.829233407974243
+      },
+      {
+        "layer": 19,
+        "head": 0,
+        "key": 2,
+        "query": 3,
+        "score": 3.599482536315918
+      },
+      {
+        "layer": 14,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.553468704223633
+      },
+      {
+        "layer": 15,
+        "head": 7,
+        "key": 2,
+        "query": 4,
+        "score": 6.574166774749756
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 4,
+        "score": 4.5186028480529785
+      },
+      {
+        "layer": 19,
+        "head": 0,
+        "key": 2,
+        "query": 4,
+        "score": 4.466287136077881
+      },
+      {
+        "layer": 22,
+        "head": 3,
+        "key": 2,
+        "query": 4,
+        "score": 4.180049419403076
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 3,
+        "query": 4,
+        "score": 4.000706195831299
+      },
+      {
+        "layer": 10,
+        "head": 10,
+        "key": 3,
+        "query": 4,
+        "score": 3.9576897621154785
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.9210174083709717
+      },
+      {
+        "layer": 9,
+        "head": 15,
+        "key": 3,
+        "query": 4,
+        "score": 3.6633193492889404
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.646667242050171
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.642331838607788
+      },
+      {
+        "layer": 5,
+        "head": 1,
+        "key": 3,
+        "query": 4,
+        "score": 3.6225836277008057
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 4,
+        "score": 3.5303051471710205
+      },
+      {
+        "layer": 17,
+        "head": 12,
+        "key": 3,
+        "query": 4,
+        "score": 3.3474764823913574
+      },
+      {
+        "layer": 10,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.2899904251098633
+      },
+      {
+        "layer": 13,
+        "head": 5,
+        "key": 3,
+        "query": 4,
+        "score": 3.1805386543273926
+      }
+    ]
+  },
+  {
+    "idx": 1,
+    "a": "dog",
+    "b": "ran",
+    "tokens": [
+      "<|endoftext|>",
+      "The",
+      " dog",
+      " ran",
+      ".",
+      " The",
+      " dog"
+    ],
+    "t_star": 6,
+    "edges": [
+      {
+        "layer": 19,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 10.69423770904541
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 4,
+        "query": 6,
+        "score": 8.45053482055664
+      },
+      {
+        "layer": 19,
+        "head": 0,
+        "key": 2,
+        "query": 6,
+        "score": 7.679098606109619
+      },
+      {
+        "layer": 17,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 6.707430362701416
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 4,
+        "query": 6,
+        "score": 6.109792232513428
+      },
+      {
+        "layer": 10,
+        "head": 2,
+        "key": 4,
+        "query": 6,
+        "score": 5.795864582061768
+      },
+      {
+        "layer": 11,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 5.485090255737305
+      },
+      {
+        "layer": 5,
+        "head": 8,
+        "key": 3,
+        "query": 6,
+        "score": 5.332048416137695
+      },
+      {
+        "layer": 15,
+        "head": 7,
+        "key": 2,
+        "query": 6,
+        "score": 5.277376174926758
+      },
+      {
+        "layer": 12,
+        "head": 13,
+        "key": 3,
+        "query": 6,
+        "score": 5.174407482147217
+      },
+      {
+        "layer": 6,
+        "head": 15,
+        "key": 3,
+        "query": 6,
+        "score": 5.156448841094971
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "key": 2,
+        "query": 6,
+        "score": 5.059627056121826
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 4,
+        "query": 6,
+        "score": 4.505814075469971
+      },
+      {
+        "layer": 14,
+        "head": 11,
+        "key": 3,
+        "query": 6,
+        "score": 4.41253137588501
+      },
+      {
+        "layer": 12,
+        "head": 4,
+        "key": 4,
+        "query": 6,
+        "score": 4.14663028717041
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 11.94589900970459
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 7.5414814949035645
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 5.804897785186768
+      },
+      {
+        "layer": 4,
+        "head": 9,
+        "key": 1,
+        "query": 2,
+        "score": 2.5181963443756104
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 1,
+        "query": 2,
+        "score": 2.4470479488372803
+      },
+      {
+        "layer": 17,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.3464722633361816
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.342867851257324
+      },
+      {
+        "layer": 18,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 2.324862480163574
+      },
+      {
+        "layer": 2,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.220167398452759
+      },
+      {
+        "layer": 2,
+        "head": 10,
+        "key": 1,
+        "query": 2,
+        "score": 2.0042178630828857
+      },
+      {
+        "layer": 14,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 1.8694015741348267
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 1,
+        "query": 2,
+        "score": 1.8070275783538818
+      },
+      {
+        "layer": 20,
+        "head": 1,
+        "key": 1,
+        "query": 2,
+        "score": 1.7166157960891724
+      },
+      {
+        "layer": 13,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 1.6671245098114014
+      },
+      {
+        "layer": 21,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 1.5857393741607666
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 3,
+        "score": 10.864151000976562
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 3,
+        "score": 9.567069053649902
+      },
+      {
+        "layer": 15,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 9.041549682617188
+      },
+      {
+        "layer": 10,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 5.435098171234131
+      },
+      {
+        "layer": 16,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 4.562418460845947
+      },
+      {
+        "layer": 4,
+        "head": 0,
+        "key": 2,
+        "query": 3,
+        "score": 4.558897495269775
+      },
+      {
+        "layer": 12,
+        "head": 14,
+        "key": 2,
+        "query": 3,
+        "score": 4.488911151885986
+      },
+      {
+        "layer": 4,
+        "head": 8,
+        "key": 2,
+        "query": 3,
+        "score": 4.200194358825684
+      },
+      {
+        "layer": 4,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.155634880065918
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 4.135008335113525
+      },
+      {
+        "layer": 17,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 4.114752292633057
+      },
+      {
+        "layer": 17,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 4.0439300537109375
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 3.989938497543335
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 3.929172992706299
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.7359578609466553
+      },
+      {
+        "layer": 22,
+        "head": 3,
+        "key": 2,
+        "query": 4,
+        "score": 4.63153600692749
+      },
+      {
+        "layer": 10,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 4.004758834838867
+      },
+      {
+        "layer": 13,
+        "head": 8,
+        "key": 3,
+        "query": 4,
+        "score": 3.8431293964385986
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.842362880706787
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 3,
+        "query": 4,
+        "score": 3.74837064743042
+      },
+      {
+        "layer": 7,
+        "head": 14,
+        "key": 3,
+        "query": 4,
+        "score": 3.6175198554992676
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 4,
+        "score": 3.5339248180389404
+      },
+      {
+        "layer": 9,
+        "head": 15,
+        "key": 3,
+        "query": 4,
+        "score": 3.4260852336883545
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 3,
+        "query": 4,
+        "score": 3.3742594718933105
+      },
+      {
+        "layer": 3,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.354496955871582
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.3383398056030273
+      },
+      {
+        "layer": 13,
+        "head": 3,
+        "key": 3,
+        "query": 4,
+        "score": 3.272534132003784
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.1871755123138428
+      },
+      {
+        "layer": 10,
+        "head": 10,
+        "key": 3,
+        "query": 4,
+        "score": 3.1082804203033447
+      },
+      {
+        "layer": 23,
+        "head": 12,
+        "key": 2,
+        "query": 4,
+        "score": 3.083031415939331
+      }
+    ]
+  },
+  {
+    "idx": 2,
+    "a": "bird",
+    "b": "flew",
+    "tokens": [
+      "<|endoftext|>",
+      "The",
+      " bird",
+      " flew",
+      ".",
+      " The",
+      " bird"
+    ],
+    "t_star": 6,
+    "edges": [
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 4,
+        "query": 6,
+        "score": 10.317933082580566
+      },
+      {
+        "layer": 17,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 6.313841342926025
+      },
+      {
+        "layer": 12,
+        "head": 13,
+        "key": 3,
+        "query": 6,
+        "score": 6.002939224243164
+      },
+      {
+        "layer": 7,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 5.783792495727539
+      },
+      {
+        "layer": 19,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 5.763128280639648
+      },
+      {
+        "layer": 10,
+        "head": 2,
+        "key": 4,
+        "query": 6,
+        "score": 5.74678897857666
+      },
+      {
+        "layer": 17,
+        "head": 12,
+        "key": 3,
+        "query": 6,
+        "score": 5.5633463859558105
+      },
+      {
+        "layer": 5,
+        "head": 8,
+        "key": 3,
+        "query": 6,
+        "score": 5.2370924949646
+      },
+      {
+        "layer": 6,
+        "head": 15,
+        "key": 3,
+        "query": 6,
+        "score": 5.194056510925293
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "key": 2,
+        "query": 6,
+        "score": 5.077771186828613
+      },
+      {
+        "layer": 12,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 5.011373043060303
+      },
+      {
+        "layer": 11,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 4.934838771820068
+      },
+      {
+        "layer": 12,
+        "head": 4,
+        "key": 4,
+        "query": 6,
+        "score": 4.920231819152832
+      },
+      {
+        "layer": 4,
+        "head": 6,
+        "key": 2,
+        "query": 6,
+        "score": 4.678971290588379
+      },
+      {
+        "layer": 23,
+        "head": 3,
+        "key": 3,
+        "query": 6,
+        "score": 4.639382839202881
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 12.587849617004395
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 7.188817501068115
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 5.24094820022583
+      },
+      {
+        "layer": 18,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 2.7257823944091797
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 1,
+        "query": 2,
+        "score": 2.447033166885376
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 1,
+        "query": 2,
+        "score": 2.3593621253967285
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.342916965484619
+      },
+      {
+        "layer": 2,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.335956573486328
+      },
+      {
+        "layer": 14,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 2.20108962059021
+      },
+      {
+        "layer": 2,
+        "head": 10,
+        "key": 1,
+        "query": 2,
+        "score": 1.9632174968719482
+      },
+      {
+        "layer": 23,
+        "head": 8,
+        "key": 1,
+        "query": 2,
+        "score": 1.8434410095214844
+      },
+      {
+        "layer": 4,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 1.751792073249817
+      },
+      {
+        "layer": 14,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 1.5250111818313599
+      },
+      {
+        "layer": 5,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 1.5014506578445435
+      },
+      {
+        "layer": 21,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 1.4738305807113647
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 3,
+        "score": 10.041942596435547
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 3,
+        "score": 6.061441421508789
+      },
+      {
+        "layer": 5,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.632550239562988
+      },
+      {
+        "layer": 10,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.361205577850342
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 4.233939170837402
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 4.133802890777588
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 4.046753406524658
+      },
+      {
+        "layer": 15,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 4.021600246429443
+      },
+      {
+        "layer": 4,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 3.889742374420166
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.8332676887512207
+      },
+      {
+        "layer": 4,
+        "head": 8,
+        "key": 2,
+        "query": 3,
+        "score": 3.6217148303985596
+      },
+      {
+        "layer": 1,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 3.4827935695648193
+      },
+      {
+        "layer": 1,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 3.301271677017212
+      },
+      {
+        "layer": 11,
+        "head": 14,
+        "key": 2,
+        "query": 3,
+        "score": 3.272944211959839
+      },
+      {
+        "layer": 12,
+        "head": 14,
+        "key": 2,
+        "query": 3,
+        "score": 3.2517731189727783
+      },
+      {
+        "layer": 9,
+        "head": 15,
+        "key": 3,
+        "query": 4,
+        "score": 3.943549633026123
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 3,
+        "query": 4,
+        "score": 3.847027063369751
+      },
+      {
+        "layer": 10,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.526674509048462
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.485280752182007
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.438084363937378
+      },
+      {
+        "layer": 11,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.336404800415039
+      },
+      {
+        "layer": 11,
+        "head": 2,
+        "key": 3,
+        "query": 4,
+        "score": 3.3302993774414062
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.3107526302337646
+      },
+      {
+        "layer": 13,
+        "head": 3,
+        "key": 3,
+        "query": 4,
+        "score": 3.2587428092956543
+      },
+      {
+        "layer": 22,
+        "head": 3,
+        "key": 2,
+        "query": 4,
+        "score": 3.193350076675415
+      },
+      {
+        "layer": 10,
+        "head": 10,
+        "key": 3,
+        "query": 4,
+        "score": 3.081162214279175
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 3,
+        "query": 4,
+        "score": 3.0760812759399414
+      },
+      {
+        "layer": 13,
+        "head": 8,
+        "key": 3,
+        "query": 4,
+        "score": 2.975816488265991
+      },
+      {
+        "layer": 13,
+        "head": 4,
+        "key": 3,
+        "query": 4,
+        "score": 2.9268622398376465
+      },
+      {
+        "layer": 5,
+        "head": 1,
+        "key": 3,
+        "query": 4,
+        "score": 2.6846115589141846
+      }
+    ]
+  },
+  {
+    "idx": 3,
+    "a": "boy",
+    "b": "jumped",
+    "tokens": [
+      "<|endoftext|>",
+      "The",
+      " boy",
+      " jumped",
+      ".",
+      " The",
+      " boy"
+    ],
+    "t_star": 6,
+    "edges": [
+      {
+        "layer": 17,
+        "head": 12,
+        "key": 3,
+        "query": 6,
+        "score": 7.353546142578125
+      },
+      {
+        "layer": 22,
+        "head": 14,
+        "key": 3,
+        "query": 6,
+        "score": 7.242450714111328
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 4,
+        "query": 6,
+        "score": 6.315435886383057
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 4,
+        "query": 6,
+        "score": 6.189748287200928
+      },
+      {
+        "layer": 17,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 6.083381175994873
+      },
+      {
+        "layer": 22,
+        "head": 6,
+        "key": 3,
+        "query": 6,
+        "score": 5.738827228546143
+      },
+      {
+        "layer": 20,
+        "head": 12,
+        "key": 3,
+        "query": 6,
+        "score": 5.719960689544678
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 4,
+        "query": 6,
+        "score": 5.5425028800964355
+      },
+      {
+        "layer": 19,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 5.491352081298828
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "key": 2,
+        "query": 6,
+        "score": 5.416874408721924
+      },
+      {
+        "layer": 12,
+        "head": 13,
+        "key": 3,
+        "query": 6,
+        "score": 5.314555644989014
+      },
+      {
+        "layer": 23,
+        "head": 3,
+        "key": 3,
+        "query": 6,
+        "score": 5.238842964172363
+      },
+      {
+        "layer": 5,
+        "head": 8,
+        "key": 3,
+        "query": 6,
+        "score": 5.215651035308838
+      },
+      {
+        "layer": 19,
+        "head": 0,
+        "key": 3,
+        "query": 6,
+        "score": 5.204302787780762
+      },
+      {
+        "layer": 22,
+        "head": 0,
+        "key": 3,
+        "query": 6,
+        "score": 5.156864643096924
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 10.992109298706055
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 6.058615684509277
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 6.021727085113525
+      },
+      {
+        "layer": 2,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.4785070419311523
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 1,
+        "query": 2,
+        "score": 2.4469995498657227
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.3429083824157715
+      },
+      {
+        "layer": 4,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.293250799179077
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 1,
+        "query": 2,
+        "score": 2.2626354694366455
+      },
+      {
+        "layer": 3,
+        "head": 8,
+        "key": 1,
+        "query": 2,
+        "score": 2.069110870361328
+      },
+      {
+        "layer": 9,
+        "head": 0,
+        "key": 1,
+        "query": 2,
+        "score": 1.9849685430526733
+      },
+      {
+        "layer": 2,
+        "head": 10,
+        "key": 1,
+        "query": 2,
+        "score": 1.8947266340255737
+      },
+      {
+        "layer": 4,
+        "head": 9,
+        "key": 1,
+        "query": 2,
+        "score": 1.8266295194625854
+      },
+      {
+        "layer": 5,
+        "head": 9,
+        "key": 1,
+        "query": 2,
+        "score": 1.7872768640518188
+      },
+      {
+        "layer": 23,
+        "head": 8,
+        "key": 1,
+        "query": 2,
+        "score": 1.7250986099243164
+      },
+      {
+        "layer": 2,
+        "head": 12,
+        "key": 1,
+        "query": 2,
+        "score": 1.5823233127593994
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 3,
+        "score": 10.31301212310791
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 3,
+        "score": 4.190403461456299
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 3,
+        "score": 4.188085079193115
+      },
+      {
+        "layer": 4,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.125876426696777
+      },
+      {
+        "layer": 10,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.102755069732666
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 3.9126029014587402
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 3.898881196975708
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.8311221599578857
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 3.729276180267334
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 2,
+        "query": 3,
+        "score": 3.3232204914093018
+      },
+      {
+        "layer": 3,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 3.15250825881958
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 3,
+        "score": 3.1185107231140137
+      },
+      {
+        "layer": 17,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 3.0096139907836914
+      },
+      {
+        "layer": 12,
+        "head": 14,
+        "key": 2,
+        "query": 3,
+        "score": 2.8298158645629883
+      },
+      {
+        "layer": 11,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 2.535968780517578
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 4,
+        "score": 5.366079330444336
+      },
+      {
+        "layer": 10,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 4.353908538818359
+      },
+      {
+        "layer": 16,
+        "head": 0,
+        "key": 2,
+        "query": 4,
+        "score": 4.33791971206665
+      },
+      {
+        "layer": 13,
+        "head": 3,
+        "key": 3,
+        "query": 4,
+        "score": 4.25111722946167
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 3,
+        "query": 4,
+        "score": 3.7849814891815186
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.7550973892211914
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.6202359199523926
+      },
+      {
+        "layer": 13,
+        "head": 8,
+        "key": 3,
+        "query": 4,
+        "score": 3.6082239151000977
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 3,
+        "query": 4,
+        "score": 3.5918445587158203
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.5039446353912354
+      },
+      {
+        "layer": 10,
+        "head": 10,
+        "key": 3,
+        "query": 4,
+        "score": 2.9779298305511475
+      },
+      {
+        "layer": 3,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 2.893996238708496
+      },
+      {
+        "layer": 13,
+        "head": 5,
+        "key": 3,
+        "query": 4,
+        "score": 2.8167824745178223
+      },
+      {
+        "layer": 7,
+        "head": 14,
+        "key": 3,
+        "query": 4,
+        "score": 2.6482484340667725
+      },
+      {
+        "layer": 11,
+        "head": 6,
+        "key": 2,
+        "query": 4,
+        "score": 2.598552703857422
+      }
+    ]
+  },
+  {
+    "idx": 4,
+    "a": "girl",
+    "b": "smiled",
+    "tokens": [
+      "<|endoftext|>",
+      "The",
+      " girl",
+      " smiled",
+      ".",
+      " The",
+      " girl"
+    ],
+    "t_star": 6,
+    "edges": [
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 4,
+        "query": 6,
+        "score": 6.954595565795898
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "key": 2,
+        "query": 6,
+        "score": 5.5781354904174805
+      },
+      {
+        "layer": 11,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 5.1828083992004395
+      },
+      {
+        "layer": 12,
+        "head": 13,
+        "key": 3,
+        "query": 6,
+        "score": 5.113180160522461
+      },
+      {
+        "layer": 17,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 5.112947463989258
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 6,
+        "score": 5.062043190002441
+      },
+      {
+        "layer": 23,
+        "head": 2,
+        "key": 4,
+        "query": 6,
+        "score": 5.038646697998047
+      },
+      {
+        "layer": 19,
+        "head": 1,
+        "key": 3,
+        "query": 6,
+        "score": 4.963169574737549
+      },
+      {
+        "layer": 19,
+        "head": 6,
+        "key": 4,
+        "query": 6,
+        "score": 4.854219913482666
+      },
+      {
+        "layer": 17,
+        "head": 12,
+        "key": 3,
+        "query": 6,
+        "score": 4.504138946533203
+      },
+      {
+        "layer": 12,
+        "head": 3,
+        "key": 3,
+        "query": 6,
+        "score": 4.385484218597412
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 4,
+        "query": 6,
+        "score": 4.345066547393799
+      },
+      {
+        "layer": 5,
+        "head": 8,
+        "key": 3,
+        "query": 6,
+        "score": 4.332488536834717
+      },
+      {
+        "layer": 6,
+        "head": 15,
+        "key": 3,
+        "query": 6,
+        "score": 4.238392353057861
+      },
+      {
+        "layer": 7,
+        "head": 2,
+        "key": 3,
+        "query": 6,
+        "score": 4.1133131980896
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 2,
+        "score": 10.864914894104004
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 2,
+        "score": 5.877323627471924
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 5.730062961578369
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 1,
+        "query": 2,
+        "score": 2.4469263553619385
+      },
+      {
+        "layer": 2,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.413450241088867
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 2.3428456783294678
+      },
+      {
+        "layer": 4,
+        "head": 4,
+        "key": 1,
+        "query": 2,
+        "score": 2.1998541355133057
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 1,
+        "query": 2,
+        "score": 2.1710293292999268
+      },
+      {
+        "layer": 23,
+        "head": 8,
+        "key": 1,
+        "query": 2,
+        "score": 1.9953367710113525
+      },
+      {
+        "layer": 3,
+        "head": 8,
+        "key": 1,
+        "query": 2,
+        "score": 1.8136239051818848
+      },
+      {
+        "layer": 2,
+        "head": 10,
+        "key": 1,
+        "query": 2,
+        "score": 1.683857798576355
+      },
+      {
+        "layer": 3,
+        "head": 15,
+        "key": 1,
+        "query": 2,
+        "score": 1.625414252281189
+      },
+      {
+        "layer": 3,
+        "head": 3,
+        "key": 1,
+        "query": 2,
+        "score": 1.5809239149093628
+      },
+      {
+        "layer": 5,
+        "head": 9,
+        "key": 1,
+        "query": 2,
+        "score": 1.5280101299285889
+      },
+      {
+        "layer": 17,
+        "head": 11,
+        "key": 1,
+        "query": 2,
+        "score": 1.5174392461776733
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 3,
+        "score": 12.056882858276367
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 1,
+        "query": 3,
+        "score": 4.784001350402832
+      },
+      {
+        "layer": 23,
+        "head": 4,
+        "key": 1,
+        "query": 3,
+        "score": 4.440064430236816
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 4.365248203277588
+      },
+      {
+        "layer": 4,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 4.229523181915283
+      },
+      {
+        "layer": 10,
+        "head": 12,
+        "key": 2,
+        "query": 3,
+        "score": 3.9015004634857178
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 2,
+        "query": 3,
+        "score": 3.8713440895080566
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 2,
+        "query": 3,
+        "score": 3.8199119567871094
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 3,
+        "score": 3.658076286315918
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 3.578143835067749
+      },
+      {
+        "layer": 3,
+        "head": 13,
+        "key": 2,
+        "query": 3,
+        "score": 3.178962230682373
+      },
+      {
+        "layer": 3,
+        "head": 10,
+        "key": 2,
+        "query": 3,
+        "score": 2.1708688735961914
+      },
+      {
+        "layer": 2,
+        "head": 9,
+        "key": 2,
+        "query": 3,
+        "score": 2.1515913009643555
+      },
+      {
+        "layer": 11,
+        "head": 6,
+        "key": 2,
+        "query": 3,
+        "score": 1.9616512060165405
+      },
+      {
+        "layer": 2,
+        "head": 4,
+        "key": 1,
+        "query": 3,
+        "score": 1.8643922805786133
+      },
+      {
+        "layer": 16,
+        "head": 0,
+        "key": 2,
+        "query": 4,
+        "score": 4.400437355041504
+      },
+      {
+        "layer": 23,
+        "head": 5,
+        "key": 2,
+        "query": 4,
+        "score": 4.318641185760498
+      },
+      {
+        "layer": 13,
+        "head": 3,
+        "key": 3,
+        "query": 4,
+        "score": 4.133392810821533
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.9950144290924072
+      },
+      {
+        "layer": 5,
+        "head": 1,
+        "key": 3,
+        "query": 4,
+        "score": 3.897172212600708
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 3.870180606842041
+      },
+      {
+        "layer": 8,
+        "head": 6,
+        "key": 3,
+        "query": 4,
+        "score": 3.8683109283447266
+      },
+      {
+        "layer": 6,
+        "head": 7,
+        "key": 3,
+        "query": 4,
+        "score": 3.6942203044891357
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "key": 3,
+        "query": 4,
+        "score": 3.5653467178344727
+      },
+      {
+        "layer": 13,
+        "head": 8,
+        "key": 3,
+        "query": 4,
+        "score": 3.5604538917541504
+      },
+      {
+        "layer": 10,
+        "head": 10,
+        "key": 3,
+        "query": 4,
+        "score": 3.3478052616119385
+      },
+      {
+        "layer": 9,
+        "head": 15,
+        "key": 3,
+        "query": 4,
+        "score": 3.114393472671509
+      },
+      {
+        "layer": 3,
+        "head": 2,
+        "key": 3,
+        "query": 4,
+        "score": 2.772514820098877
+      },
+      {
+        "layer": 23,
+        "head": 6,
+        "key": 1,
+        "query": 4,
+        "score": 2.762083053588867
+      },
+      {
+        "layer": 10,
+        "head": 11,
+        "key": 3,
+        "query": 4,
+        "score": 2.7169556617736816
+      }
+    ]
+  }
+]

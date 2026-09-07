@@ -1,0 +1,3 @@
+model,n,mean_abs_S,mean_drop_S,std_drop_S,mean_drop_R,std_drop_R,gap_S_minus_R,score,k,B,ban_bos,n_random,seed,run
+gpt2-small,23,68.478,3.6547,1.7781,0.1063,0.1178,3.5483,attn_x_vnorm,15,4,true,10,0,induction_20260907_105902
+gpt2-medium,23,60.652,1.8531,1.9202,0.0041,0.0721,1.8490,attn_x_vnorm,15,4,true,10,0,induction_gpt2-medium_20260907_113405
