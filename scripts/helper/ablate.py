@@ -91,6 +91,26 @@ def next_token_logit(
 
 
 @torch.no_grad()
+def logit_diff(
+    model: HookedTransformer,
+    tokens: torch.Tensor,
+    correct_id: int,
+    incorrect_id: int,
+    *,
+    ablate: list[Edge] | None = None,
+) -> float:
+    """logit(correct) - logit(incorrect) at the last position."""
+    if ablate:
+        logits = model.run_with_hooks(
+            tokens,
+            fwd_hooks=_ablation_hooks(ablate),
+        )
+    else:
+        logits = model(tokens)
+    return float((logits[0, -1, correct_id] - logits[0, -1, incorrect_id]).item())
+
+
+@torch.no_grad()
 def measure_drop(
     model: HookedTransformer,
     tokens: torch.Tensor,
@@ -119,6 +139,44 @@ def measure_drop(
     return {
         "logit_full": full,
         "logit_ablate_S": ablated,
+        "drop_S": drop_S,
+        "drop_random_mean": rand_mean,
+        "drop_random_std": rand_std,
+        "n_edges": len(S),
+        "n_random": n_random,
+    }
+
+
+@torch.no_grad()
+def measure_logit_diff_drop(
+    model: HookedTransformer,
+    tokens: torch.Tensor,
+    correct_id: int,
+    incorrect_id: int,
+    S: list[Edge],
+    *,
+    all_edges: list[Edge],
+    n_random: int = 20,
+    seed: int = 0,
+) -> dict:
+    """Same as measure_drop but metric = logit(IO) - logit(S) (IOI)."""
+    full = logit_diff(model, tokens, correct_id, incorrect_id)
+    ablated = logit_diff(model, tokens, correct_id, incorrect_id, ablate=S)
+    random_drops = []
+    for r in range(n_random):
+        R = sample_random_edges(all_edges, len(S), seed=seed + r)
+        rand_ld = logit_diff(model, tokens, correct_id, incorrect_id, ablate=R)
+        random_drops.append(full - rand_ld)
+
+    drop_S = full - ablated
+    rand_mean = sum(random_drops) / max(len(random_drops), 1)
+    rand_std = (
+        (sum((d - rand_mean) ** 2 for d in random_drops) / max(len(random_drops), 1))
+        ** 0.5
+    )
+    return {
+        "logit_diff_full": full,
+        "logit_diff_ablate_S": ablated,
         "drop_S": drop_S,
         "drop_random_mean": rand_mean,
         "drop_random_std": rand_std,

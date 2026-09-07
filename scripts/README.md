@@ -20,6 +20,10 @@ python scripts/test-gpt2-medium/run_induction.py
 python scripts/test-pythia-410m/run_induction.py --limit 5 --n-random 5   # smoke
 python scripts/test-pythia-410m/run_induction.py                         # full
 
+# Task 2: IOI on gpt2-small (same extract protocol)
+python scripts/test-gpt2-small/run_ioi.py --limit 5 --n-random 5
+python scripts/test-gpt2-small/run_ioi.py
+
 # optional smoke
 python scripts/test-gpt2-medium/run_induction.py --limit 5 --n-random 5
 ```
