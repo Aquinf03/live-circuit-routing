@@ -54,6 +54,49 @@ def extract_subgraph(
     return list(selected.values())
 
 
+def extract_subgraph_threshold(
+    edges: list[Edge],
+    t_star: int,
+    *,
+    tau: float,
+    B: int = 3,
+    exclude_self: bool = True,
+) -> list[Edge]:
+    """Same walk as top-k, but keep incoming edges with score >= tau."""
+    if tau < 0 or B <= 0:
+        return []
+
+    incoming: dict[int, list[Edge]] = {}
+    for e in edges:
+        if exclude_self and e.key == e.query:
+            continue
+        if e.score < tau:
+            continue
+        incoming.setdefault(e.query, []).append(e)
+
+    for lst in incoming.values():
+        lst.sort(key=lambda e: e.score, reverse=True)
+
+    selected: dict[tuple[int, int, int, int], Edge] = {}
+    frontier = {t_star}
+    expanded: set[int] = set()
+
+    for _ in range(B):
+        nxt: set[int] = set()
+        for i in frontier:
+            if i in expanded:
+                continue
+            expanded.add(i)
+            for e in incoming.get(i, []):
+                selected[(e.layer, e.head, e.key, e.query)] = e
+                nxt.add(e.key)
+        frontier = nxt - expanded
+        if not frontier:
+            break
+
+    return list(selected.values())
+
+
 def extract_attention_mass_only(
     edges: list[Edge],
     t_star: int,

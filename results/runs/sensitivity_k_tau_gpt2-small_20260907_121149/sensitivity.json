@@ -1,0 +1,117 @@
+{
+  "config": {
+    "model": "gpt2-small",
+    "device": "cpu",
+    "score": "attn_x_vnorm",
+    "B": 4,
+    "n_random": 5,
+    "limit": 10,
+    "ks": [
+      5,
+      10,
+      15,
+      20,
+      30
+    ],
+    "taus": [
+      0.5,
+      1.0,
+      2.0,
+      5.0
+    ]
+  },
+  "k_rows": [
+    {
+      "cut": "k",
+      "value": 5,
+      "mean_n_edges": 17,
+      "mean_drop_S": 0.07381629943847656,
+      "mean_drop_R": 0.03717746734619141,
+      "gap": 0.036638832092285155,
+      "n_examples": 10,
+      "n_fail": 4
+    },
+    {
+      "cut": "k",
+      "value": 10,
+      "mean_n_edges": 40,
+      "mean_drop_S": 2.1983667373657227,
+      "mean_drop_R": 0.053075313568115234,
+      "gap": 2.1452914237976075,
+      "n_examples": 10,
+      "n_fail": 1
+    },
+    {
+      "cut": "k",
+      "value": 15,
+      "mean_n_edges": 67.5,
+      "mean_drop_S": 4.046693897247314,
+      "mean_drop_R": 0.11979442596435547,
+      "gap": 3.9268994712829586,
+      "n_examples": 10,
+      "n_fail": 0
+    },
+    {
+      "cut": "k",
+      "value": 20,
+      "mean_n_edges": 98,
+      "mean_drop_S": 4.990248775482177,
+      "mean_drop_R": 0.1414974784851074,
+      "gap": 4.84875129699707,
+      "n_examples": 10,
+      "n_fail": 0
+    },
+    {
+      "cut": "k",
+      "value": 30,
+      "mean_n_edges": 150,
+      "mean_drop_S": 6.3634871482849125,
+      "mean_drop_R": 0.21353450775146485,
+      "gap": 6.1499526405334475,
+      "n_examples": 10,
+      "n_fail": 0
+    }
+  ],
+  "tau_rows": [
+    {
+      "cut": "tau",
+      "value": 0.5,
+      "mean_n_edges": 548.6,
+      "mean_drop_S": 9.392051696777344,
+      "mean_drop_R": 1.1942511367797852,
+      "gap": 8.197800559997559,
+      "n_examples": 10,
+      "n_fail": 0
+    },
+    {
+      "cut": "tau",
+      "value": 1.0,
+      "mean_n_edges": 222.9,
+      "mean_drop_S": 8.558810615539551,
+      "mean_drop_R": 0.35556812286376954,
+      "gap": 8.203242492675782,
+      "n_examples": 10,
+      "n_fail": 0
+    },
+    {
+      "cut": "tau",
+      "value": 2.0,
+      "mean_n_edges": 68.7,
+      "mean_drop_S": 3.181693172454834,
+      "mean_drop_R": 0.14509790420532226,
+      "gap": 3.0365952682495116,
+      "n_examples": 10,
+      "n_fail": 0
+    },
+    {
+      "cut": "tau",
+      "value": 5.0,
+      "mean_n_edges": 4.9,
+      "mean_drop_S": -0.36025638580322267,
+      "mean_drop_R": 0.012683982849121095,
+      "gap": -0.37294036865234376,
+      "n_examples": 10,
+      "n_fail": 8
+    }
+  ]
+}
