@@ -120,15 +120,17 @@ def _style_axes(ax) -> None:
 
 
 def fig3_causal(out: Path) -> None:
-    # Means from paper tables (torch tensors for the plotting path).
+    # Means from n=100 paired runs.
     labels = [
         "Ind.\nSmall",
         "Ind.\nMedium",
         "Ind.\nPythia",
         "IOI\nSmall",
+        "IOI\nMedium",
+        "IOI\nPythia",
     ]
-    drop_s = torch.tensor([3.655, 1.853, 1.812, 5.270])
-    drop_r = torch.tensor([0.106, 0.004, 0.031, 0.098])
+    drop_s = torch.tensor([4.4193, 1.5112, 2.2748, 5.2970, 3.0614, 5.6346])
+    drop_r = torch.tensor([0.0898, -0.0018, 0.0254, 0.1332, 0.0066, 0.0074])
     x = torch.arange(len(labels), dtype=torch.float32)
 
     fig, ax = plt.subplots(figsize=(7.2, 3.6))
@@ -150,7 +152,7 @@ def fig3_causal(out: Path) -> None:
     ax.set_xticks(x.numpy())
     ax.set_xticklabels(labels)
     ax.set_ylabel("Mean logit drop")
-    ax.set_title("Causal verification: extracted vs size-matched random")
+    ax.set_title("Causal verification (n=100): extracted vs size-matched random")
     ax.legend(frameon=False, fontsize=9)
     ax.axhline(0.0, color="#444444", lw=0.6)
     _style_axes(ax)

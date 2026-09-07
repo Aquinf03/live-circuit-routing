@@ -2,6 +2,21 @@
 
 Short list for the live routing-graph paper. Links preferred over perfect BibTeX for now.
 
+## Attention scoring / flow (score-function neighbors)
+
+1. **Abnar & Zuidema (2020).** *Quantifying Attention Flow in Transformers.* ACL.
+  [https://aclanthology.org/2020.acl-main.385/](https://aclanthology.org/2020.acl-main.385/)  
+   → Attention rollout / flow: compose attentions across depth. We cite as the
+   “raw \(A\) is weak under mixing” lesson; we keep discrete \((\ell,h)\) edges
+   + walk + ablation instead of rolling out.
+2. **Kobayashi et al. (2020).** *Attention is Not Only a Weight.* EMNLP.
+  [https://aclanthology.org/2020.emnlp-main.574/](https://aclanthology.org/2020.emnlp-main.574/)  
+   → Norm-based analysis \(\|\alpha f(x)\|\). Closest ancestor of our
+   \(A\cdot\|V\|\) edge score; we use a lightweight cousin for ranking routes,
+   not as a full attribution method.
+
+
+
 ## Attention circuits / foundations
 
 1. **Elhage et al. (2021).** *A Mathematical Framework for Transformer Circuits.*

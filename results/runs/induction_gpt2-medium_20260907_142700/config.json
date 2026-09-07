@@ -1,0 +1,14 @@
+{
+  "model": "gpt2-medium",
+  "device": "cpu",
+  "score": "attn_x_vnorm",
+  "k": 15,
+  "B": 4,
+  "ban_bos": true,
+  "exclude_self": true,
+  "n_random": 10,
+  "seed": 0,
+  "n": 100,
+  "limit": 0,
+  "n_examples": 100
+}

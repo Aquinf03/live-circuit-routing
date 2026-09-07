@@ -9,6 +9,8 @@
 - **QK / OV framework + induction / IOI papers** map specific heads by hand. We reuse those as ground truth; we do not rediscover them manually.
 - **ACDC / activation patching** find circuits by many interventions. We extract a candidate from the attention routing graph first, then verify with a small number of ablations.
 - **Information Flow Routes** build a subgraph via attribution over the full computation graph. We stay attention-routing-first: edges are attention routes, not a full attributed residual/MLP graph.
+- **Attention rollout / flow (Abnar & Zuidema)** compose attentions across layers for token importance. We keep per-edge \((\ell,h)\) identity and a short walk, then verify by ablation rather than rolling out.
+- **Norm-based attention (Kobayashi et al.)** analyzes \(\|\alpha f(x)\|\) because weight alone understates the write. Our default score \(A\cdot\|V\|\) is a cheap edge-level cousin used for ranking, not a full norm-based analysis.
 - **Attribution graphs + QK feature attributions** need replacement models / sparse features and often freeze attention. We do not train SAEs/CLTs; we read the live attention graph as the circuit sketch.
 - **Sparse feature circuits** explain *what* features mean. We only claim *where* information was routed; feature semantics are out of scope.
 

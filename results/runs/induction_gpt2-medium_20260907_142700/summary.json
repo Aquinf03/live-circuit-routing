@@ -1,0 +1,21 @@
+{
+  "mean_n_edges": 61.2,
+  "mean_drop_S": 1.5112352657318116,
+  "std_drop_S": 1.9303084047208041,
+  "mean_drop_R": -0.0017579946517944337,
+  "std_drop_R": 0.06270702910987455,
+  "gap_S_minus_R": 1.512993260383606,
+  "n_examples": 100,
+  "paired_n": 100,
+  "paired_mean_gap": 1.5129932603836058,
+  "paired_std_gap": 1.9254707193561829,
+  "paired_se_gap": 0.1925470719356183,
+  "paired_gap_ci95_low": 1.1407117376327514,
+  "paired_gap_ci95_high": 1.8906515941619872,
+  "paired_n_pos": 81,
+  "paired_n_neg": 19,
+  "paired_n_zero": 0,
+  "paired_n_fail": 19,
+  "paired_sign_test_p": 2.7027625220488313e-10,
+  "paired_wilcoxon_greater_p": 9.376768973887506e-11
+}

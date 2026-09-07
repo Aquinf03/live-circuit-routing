@@ -1,8 +1,6 @@
 """IOI prompts for Task 2 (Indirect Object Identification).
 
-Template (Wang et al. style):
-  When {A} and {B} went to the store, {A} gave a drink to
-  → {B}   (indirect object, not the repeated subject {A})
+Large name × template pool so we can run n≈100 clean examples.
 """
 
 from __future__ import annotations
@@ -19,33 +17,73 @@ class IOIExample:
     s: str  # incorrect subject name token string
     a: str
     b: str
+    template: str = "store"
 
 
-# Single-token-friendly GPT-2 first names (with leading space when used as tokens).
-_NAME_PAIRS: list[tuple[str, str]] = [
-    ("John", "Mary"),
-    ("Mary", "John"),
-    ("Alice", "Bob"),
-    ("Bob", "Alice"),
-    ("Tom", "Sarah"),
-    ("Sarah", "Tom"),
-    ("James", "Emily"),
-    ("Emily", "James"),
-    ("David", "Lisa"),
-    ("Lisa", "David"),
-    ("Paul", "Anna"),
-    ("Anna", "Paul"),
-    ("Mark", "Laura"),
-    ("Laura", "Mark"),
-    ("Chris", "Emma"),
-    ("Emma", "Chris"),
-    ("Sam", "Kate"),
-    ("Kate", "Sam"),
-    ("Dan", "Ruth"),
-    ("Ruth", "Dan"),
-    ("Joe", "Amy"),
-    ("Amy", "Joe"),
-    ("Tim", "Nina"),
+# First names that are often single tokens with a leading space.
+_NAMES: list[str] = [
+    "John",
+    "Mary",
+    "Alice",
+    "Bob",
+    "Tom",
+    "Sarah",
+    "James",
+    "Emily",
+    "David",
+    "Lisa",
+    "Paul",
+    "Anna",
+    "Mark",
+    "Laura",
+    "Chris",
+    "Emma",
+    "Sam",
+    "Kate",
+    "Dan",
+    "Ruth",
+    "Joe",
+    "Amy",
+    "Tim",
+    "Nina",
+    "Ryan",
+    "Grace",
+    "Luke",
+    "Olivia",
+    "Jack",
+    "Sophie",
+    "Ben",
+    "Claire",
+    "Adam",
+    "Helen",
+    "Eric",
+    "Julia",
+    "Kevin",
+    "Rachel",
+    "Brian",
+    "Megan",
+    "Jason",
+    "Lauren",
+    "Matt",
+    "Hannah",
+    "Steve",
+    "Chloe",
+    "Andrew",
+    "Natalie",
+    "Peter",
+    "Victoria",
+]
+
+# (name, place/object filler) → When A and B went to the {place}, A gave a {obj} to
+_TEMPLATES: list[tuple[str, str, str]] = [
+    ("store", "store", "drink"),
+    ("park", "park", "ball"),
+    ("cafe", "cafe", "coffee"),
+    ("school", "school", "book"),
+    ("office", "office", "pen"),
+    ("station", "station", "ticket"),
+    ("library", "library", "note"),
+    ("market", "market", "bag"),
 ]
 
 
@@ -54,16 +92,42 @@ def _is_single_token(model: HookedTransformer, piece: str) -> bool:
     return int(ids.shape[0]) == 1
 
 
-def build_ioi_set(model: HookedTransformer) -> list[IOIExample]:
+def build_ioi_set(
+    model: HookedTransformer,
+    *,
+    n: int | None = None,
+) -> list[IOIExample]:
+    """Build IOI examples that tokenize cleanly; optionally cap at ``n``."""
     out: list[IOIExample] = []
-    for a, b in _NAME_PAIRS:
-        a_tok = f" {a}"
-        b_tok = f" {b}"
-        if not (_is_single_token(model, a_tok) and _is_single_token(model, b_tok)):
-            continue
-        # A is subject (repeated); B is indirect object (correct completion)
-        prefix = f"When{a_tok} and{b_tok} went to the store,{a_tok} gave a drink to"
-        out.append(IOIExample(prefix=prefix, io=b_tok, s=a_tok, a=a, b=b))
+    clean_names = [name for name in _NAMES if _is_single_token(model, f" {name}")]
+    if len(clean_names) < 4:
+        raise RuntimeError(f"too few single-token names: {len(clean_names)}")
+
+    for tmpl_name, place, obj in _TEMPLATES:
+        for i, a in enumerate(clean_names):
+            for b in clean_names[i + 1 :]:
+                for a_name, b_name in ((a, b), (b, a)):
+                    a_tok = f" {a_name}"
+                    b_tok = f" {b_name}"
+                    prefix = (
+                        f"When{a_tok} and{b_tok} went to the {place},"
+                        f"{a_tok} gave a {obj} to"
+                    )
+                    out.append(
+                        IOIExample(
+                            prefix=prefix,
+                            io=b_tok,
+                            s=a_tok,
+                            a=a_name,
+                            b=b_name,
+                            template=tmpl_name,
+                        )
+                    )
+                    if n is not None and len(out) >= n:
+                        return out
+
     if len(out) < 8:
         raise RuntimeError(f"too few clean IOI pairs: {len(out)}")
+    if n is not None and len(out) < n:
+        raise RuntimeError(f"only {len(out)} IOI examples; need n={n}")
     return out

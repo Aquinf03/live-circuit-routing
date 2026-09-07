@@ -1,0 +1,23 @@
+{
+  "task": "IOI",
+  "metric": "logit_diff(IO - S)",
+  "mean_n_edges": 191.85,
+  "mean_drop_S": 3.06138466835022,
+  "std_drop_S": 2.1514748419979095,
+  "mean_drop_R": 0.00662254524230957,
+  "std_drop_R": 0.08629379493281811,
+  "gap_S_minus_R": 3.0547621231079103,
+  "n_examples": 100,
+  "paired_n": 100,
+  "paired_mean_gap": 3.0547621231079103,
+  "paired_std_gap": 2.127454173621159,
+  "paired_se_gap": 0.21274541736211589,
+  "paired_gap_ci95_low": 2.6325582275390627,
+  "paired_gap_ci95_high": 3.4627879285812377,
+  "paired_n_pos": 88,
+  "paired_n_neg": 12,
+  "paired_n_zero": 0,
+  "paired_n_fail": 12,
+  "paired_sign_test_p": 1.9113575360277173e-15,
+  "paired_wilcoxon_greater_p": 1.8902826728645962e-16
+}

@@ -13,6 +13,7 @@ from load_model import attention_from_forward, get_device, load_model
 from paths import RESULTS_RUNS, ensure_helper_imports
 from routing_graph import build_routing_graph
 from save_results import edge_to_dict, new_run_dir, save_run
+from stats_gap import format_gap_stats, paired_gap_stats
 
 ensure_helper_imports()
 
@@ -30,7 +31,13 @@ def build_arg_parser(default_model: str) -> argparse.ArgumentParser:
     )
     p.add_argument("--n-random", type=int, default=10, help="random controls per example")
     p.add_argument("--seed", type=int, default=0)
-    p.add_argument("--limit", type=int, default=0, help="use first N examples (0=all)")
+    p.add_argument(
+        "--n",
+        type=int,
+        default=100,
+        help="number of clean induction examples (0 = use full filtered pool)",
+    )
+    p.add_argument("--limit", type=int, default=0, help="alias for --n if >0 (deprecated)")
     p.add_argument("--no-ban-bos", action="store_true", help="keep BOS sink edges")
     p.add_argument("--no-save", action="store_true", help="skip writing results/runs")
     p.add_argument(
@@ -46,9 +53,9 @@ def run_induction_eval(argv: Sequence[str] | None, *, default_model: str) -> Non
     args = build_arg_parser(default_model).parse_args(argv)
     device = "cpu" if get_device() == "mps" else get_device()
     model = load_model(name=args.model, device=device)
-    examples = build_induction_set(model)
-    if args.limit > 0:
-        examples = examples[: args.limit]
+    n = args.limit if args.limit > 0 else args.n
+    n_arg = None if n == 0 else n
+    examples = build_induction_set(model, n=n_arg)
 
     ban_bos = not args.no_ban_bos
     drops_S: list[float] = []
@@ -127,6 +134,7 @@ def run_induction_eval(argv: Sequence[str] | None, *, default_model: str) -> Non
     std_S = statistics.pstdev(drops_S) if len(drops_S) > 1 else 0.0
     std_R = statistics.pstdev(drops_R) if len(drops_R) > 1 else 0.0
     gap = mean_S - mean_R
+    gap_stats = paired_gap_stats(drops_S, drops_R, seed=args.seed)
     summary = {
         "mean_n_edges": statistics.mean(n_edges),
         "mean_drop_S": mean_S,
@@ -135,6 +143,7 @@ def run_induction_eval(argv: Sequence[str] | None, *, default_model: str) -> Non
         "std_drop_R": std_R,
         "gap_S_minus_R": gap,
         "n_examples": len(examples),
+        **{f"paired_{k}": v for k, v in gap_stats.items()},
     }
 
     print("---")
@@ -142,6 +151,7 @@ def run_induction_eval(argv: Sequence[str] | None, *, default_model: str) -> Non
     print(f"mean drop_S={mean_S:+.4f} ± {std_S:.4f}")
     print(f"mean drop_R={mean_R:+.4f} ± {std_R:.4f}")
     print(f"gap (S - R)={gap:+.4f}  (want clearly > 0)")
+    print(format_gap_stats(gap_stats))
 
     if not args.no_save:
         tag = args.tag or f"induction_{args.model.replace('/', '-')}"
@@ -156,6 +166,7 @@ def run_induction_eval(argv: Sequence[str] | None, *, default_model: str) -> Non
             "exclude_self": True,
             "n_random": args.n_random,
             "seed": args.seed,
+            "n": n,
             "limit": args.limit,
             "n_examples": len(examples),
         }

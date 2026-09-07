@@ -55,10 +55,10 @@ ask whether those routes actually matter.
 
 They often do. On induction and IOI (tasks where the ``right'' circuit is
 already known), ablating our extracted edges hurts the model much more than
-ablating a random set of the same size. That holds on GPT-2 Small, and the
-induction result reproduces on GPT-2 Medium and Pythia-410M. The extract step
-costs one forward; a head-by-head patch sweep costs about two orders of
-magnitude more.
+ablating a random set of the same size. We evaluate \(n{=}100\) prompts per
+cell on GPT-2 Small, GPT-2 Medium, and Pythia-410M, with paired gap tests and
+bootstrap confidence intervals. The extract step costs one forward; a
+head-by-head patch sweep costs about two orders of magnitude more.
 
 We are not claiming a complete circuit atlas. We are claiming a cheap sketch
 that carries real causal signal on known tasks, with clear failure modes when
@@ -116,8 +116,18 @@ written along this route'':
 \[
 s = A[\ell,h,i,j] \cdot \bigl\|V[\ell,h,j]\bigr\|_2 .
 \]
-Raw attention alone is a backup score; the product works a bit better in our
-checks.
+That product sits next to a line of work that already warned against reading
+raw attention alone. Kobayashi et al.~\cite{kobayashi2020attn} show that the
+attention output depends on both the weight and the transformed value vector,
+and analyze \(\|\alpha\,f(x)\|\) rather than \(\alpha\) by itself; our score is
+a cheap edge-level cousin of that idea (weight times value norm), used only to
+rank routes for extraction. Abnar and Zuidema~\cite{abnar2020rollout} go
+further and compose attentions across depth (rollout / flow) because mixing
+makes single-layer weights a poor token-importance probe. We take the shared
+lesson that raw \(A\) is weak, but we do not roll out: we keep discrete
+\((\ell,h,j\!\to\!i)\) edges, walk a few hops, and insist on a causal check.
+Raw attention alone remains a backup score; the product works a bit better in
+our ablations.
 
 \paragraph{Keep a small subgraph.}
 Start at the answer position \(t^\star\) (usually the last token). Take its
@@ -138,19 +148,27 @@ routing, a short walk, and a fair control.
 \label{sec:results}
 
 We use GPT-2 Small as the main model, then replay induction on GPT-2 Medium and
-Pythia-410M~\cite{biderman2023pythia}. Induction prompts look like
-\texttt{The cat sat. The cat} $\to$ \texttt{sat}. IOI uses the usual name
-templates on Small. Same recipe everywhere: product score, \(k{=}15\), four
-hops, ten random controls.
+Pythia-410M~\cite{biderman2023pythia}, and IOI on all three. Each cell uses
+\(n{=}100\) clean prompts (single-token names/words after filtering). Same
+recipe everywhere: product score, \(k{=}15\), four hops, ten random controls.
+Besides means, we report a paired per-example gap
+\(g_i=\Delta_S^{(i)}-\Delta_R^{(i)}\), a \(95\%\) bootstrap CI for the mean
+gap, a two-sided sign test on \(\mathrm{sign}(g_i)\), and (when available) a
+one-sided Wilcoxon signed-rank test that \(\Delta_S>\Delta_R\).
 
 \subsection{The sketch beats random}
 
-Figure~\ref{fig:causal} and Table~\ref{tab:main} are the headline. On GPT-2
-Small induction, turning off \(S\) drops the target logit by about \(3.7\) on
-average; random edges of the same size barely move it (\(\sim 0.1\)). Every one
-of \(23\) prompts passes. Medium and Pythia show the same pattern with smaller
-gaps. IOI on Small is even cleaner: gap about \(5.2\), again \(0/23\) fails.
-So this is not a one-task trick.
+Figure~\ref{fig:causal} and Table~\ref{tab:main} are the headline. Every cell
+uses \(n{=}100\) and a paired gap test. On GPT-2 Small induction, turning off
+\(S\) drops the target logit by about \(4.42\) versus \(0.09\) for random
+(gap \(+4.33\); \(95\%\) bootstrap CI \([+3.95,+4.72]\); fails \(0/100\)).
+Medium and Pythia induction keep positive gaps (\({+}1.51\), \({+}2.25\)) with
+CIs that exclude zero, though more examples fail individually (\(19/100\),
+\(11/100\)). IOI is not a one-task trick: Small and Pythia are essentially
+clean (gaps \({+}5.16\) and \({+}5.63\); fails \(0/100\)), and Medium still
+clears a clear margin (gap \({+}3.05\); CI \([+2.63,+3.46]\); fails \(12/100\)).
+In all six cells the Wilcoxon test that \(\Delta_S>\Delta_R\) is
+\(p{<}10^{-10}\).
 
 \begin{figure}[t]
   \centering
@@ -163,18 +181,20 @@ So this is not a one-task trick.
 
 \begin{table}[t]
   \centering
-  \caption{Same story in numbers. Gap $=\Delta_S-\Delta_R$; higher is better
-  for our claim.}
+  \caption{Causal verification at \(n{=}100\). Gap $=\Delta_S-\Delta_R$.
+  Every cell has a $95\%$ bootstrap CI excluding $0$ and Wilcoxon $p{<}10^{-10}$.}
   \label{tab:main}
   \setlength{\tabcolsep}{5pt}
   \begin{tabular}{@{}llrrrcc@{}}
     \toprule
     Task & Model & \(n\) & \(|S|\) & \(\Delta_S\) & \(\Delta_R\) & gap \\
     \midrule
-    Induction & GPT-2 Small  & 23 & 68.5 & \(+3.66{\pm}1.78\) & \(+0.11{\pm}0.12\) & \(\mathbf{+3.55}\) \\
-    Induction & GPT-2 Medium & 23 & 60.7 & \(+1.85{\pm}1.92\) & \(+0.00{\pm}0.07\) & \(\mathbf{+1.85}\) \\
-    Induction & Pythia-410M  & 23 & 59.3 & \(+1.81{\pm}1.33\) & \(+0.03{\pm}0.12\) & \(\mathbf{+1.78}\) \\
-    IOI       & GPT-2 Small  & 23 & 195  & \(+5.27{\pm}1.92\) & \(+0.10{\pm}0.27\) & \(\mathbf{+5.17}\) \\
+    Induction & GPT-2 Small  & 100 & 71.0 & \(+4.42{\pm}1.97\) & \(+0.09{\pm}0.18\) & \(\mathbf{+4.33}\) \\
+    Induction & GPT-2 Medium & 100 & 61.2 & \(+1.51{\pm}1.93\) & \(-0.00{\pm}0.06\) & \(\mathbf{+1.51}\) \\
+    Induction & Pythia-410M  & 100 & 59.4 & \(+2.27{\pm}1.79\) & \(+0.03{\pm}0.11\) & \(\mathbf{+2.25}\) \\
+    IOI       & GPT-2 Small  & 100 & 195 & \(+5.30{\pm}1.31\) & \(+0.13{\pm}0.23\) & \(\mathbf{+5.16}\) \\
+    IOI       & GPT-2 Medium & 100 & 192 & \(+3.06{\pm}2.15\) & \(+0.01{\pm}0.09\) & \(\mathbf{+3.05}\) \\
+    IOI       & Pythia-410M  & 100 & 169 & \(+5.63{\pm}1.30\) & \(+0.01{\pm}0.09\) & \(\mathbf{+5.63}\) \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -215,11 +235,14 @@ caught enough of a working path that breaking it hurts.
 
 \subsection{When it fails}
 
-Out of \(92\) prompt-level runs across tasks and models, five fail the random
-test (\(\sim\)5\%), all on Medium or Pythia induction. Small stays clean.
-Typical failure modes: the walk latches onto a high-scoring distractor, the
-fixed hop budget misses a longer path, or attention mass is not causation
-(hence the BOS ban and the value-norm score).
+We count an example as a fail when \(\Delta_S\le\Delta_R\), and we also report
+paired tests on \(g_i\) so the fail count is not doing all the persuasion.
+Across the six \(n{=}100\) cells, fails concentrate on Medium induction
+(\(19/100\)), Pythia induction (\(11/100\)), and Medium IOI (\(12/100\));
+Small induction, Small IOI, and Pythia IOI are \(0/100\). Typical residual
+modes: the walk latches onto a high-scoring distractor, the fixed hop budget
+misses a longer path, or attention mass is not causation (hence the BOS ban
+and the value-norm score).
 
 \subsection{What we varied}
 
@@ -236,11 +259,16 @@ layers.
 
 This is a routing sketch with a causal check, not a full discovery engine. We
 do not name features, train sparse autoencoders, or claim every edge in \(S\)
-is necessary or monosemantic~\cite{marks2025sfc,ameisen2025circuittracing}. Heavier methods
-remain the right tool when you need completeness
-\cite{conmy2023acdc,ferrando2024ifr}. Our wedge is simpler: attention already draws a
-map; a short walk on that map is often enough to find something that matters,
-fast.
+is necessary or monosemantic~\cite{marks2025sfc,ameisen2025circuittracing}.
+We also do not replace attention rollout or a full norm-based attention
+analysis~\cite{abnar2020rollout,kobayashi2020attn}: those target token-level
+importance under mixing or a finer decomposition of \(\alpha f(x)\). Our score
+is a one-forward ranking signal for candidate routes; the claim rests on the
+ablation gap, not on the score being a complete attribution method. Heavier
+circuit tools remain right when you need completeness
+\cite{conmy2023acdc,ferrando2024ifr}. The wedge is simpler: attention already
+draws a map; a short walk on that map is often enough to find something that
+matters, fast.
 
 We also stayed on small open models and two synthetic tasks. Transfer to larger
 models or messier behavior is open. Verification zeros attention and
