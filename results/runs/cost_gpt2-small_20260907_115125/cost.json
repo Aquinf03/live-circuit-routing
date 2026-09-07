@@ -1,0 +1,97 @@
+{
+  "config": {
+    "model": "gpt2-small",
+    "device": "cpu",
+    "score": "attn_x_vnorm",
+    "k": 15,
+    "B": 4,
+    "n_random": 10,
+    "limit": 5,
+    "ban_bos": true,
+    "skip_head_patch": false
+  },
+  "summary": {
+    "model": "gpt2-small",
+    "device": "cpu",
+    "score": "attn_x_vnorm",
+    "k": 15,
+    "B": 4,
+    "n_examples": 5,
+    "n_heads_total": 144,
+    "mean_live_extract_s": 0.05619718340458348,
+    "mean_verify_s": 0.4810987414093688,
+    "mean_head_patch_s": 5.939310924801975,
+    "live_forwards_per_example": 1,
+    "verify_forwards_per_example": 12,
+    "head_patch_forwards_per_example": 145,
+    "speedup_extract_vs_head_patch": 105.68698580572564,
+    "forward_ratio_head_patch_vs_live": 145.0
+  },
+  "rows": [
+    {
+      "example": "cat/sat",
+      "live_extract_s": 0.0803076250012964,
+      "live_forwards": 1,
+      "verify_s": 0.47336654202081263,
+      "verify_forwards": 12,
+      "head_patch_s": 5.815608166973107,
+      "head_patch_forwards": 145,
+      "n_heads_total": 144,
+      "n_edges_S": 60,
+      "drop_S": 7.2319135665893555,
+      "drop_head_oracle": 1.320591926574707
+    },
+    {
+      "example": "dog/ran",
+      "live_extract_s": 0.0480583329917863,
+      "live_forwards": 1,
+      "verify_s": 0.4701389159890823,
+      "verify_forwards": 12,
+      "head_patch_s": 6.370245916012209,
+      "head_patch_forwards": 145,
+      "n_heads_total": 144,
+      "n_edges_S": 60,
+      "drop_S": 5.601003646850586,
+      "drop_head_oracle": 1.5140628814697266
+    },
+    {
+      "example": "bird/flew",
+      "live_extract_s": 0.047189584001898766,
+      "live_forwards": 1,
+      "verify_s": 0.4727434170199558,
+      "verify_forwards": 12,
+      "head_patch_s": 5.839785167016089,
+      "head_patch_forwards": 145,
+      "n_heads_total": 144,
+      "n_edges_S": 75,
+      "drop_S": 2.5591306686401367,
+      "drop_head_oracle": 2.437084197998047
+    },
+    {
+      "example": "boy/jumped",
+      "live_extract_s": 0.05172899999888614,
+      "live_forwards": 1,
+      "verify_s": 0.49639541597571224,
+      "verify_forwards": 12,
+      "head_patch_s": 5.831306166015565,
+      "head_patch_forwards": 145,
+      "n_heads_total": 144,
+      "n_edges_S": 60,
+      "drop_S": 3.4093761444091797,
+      "drop_head_oracle": 1.9109020233154297
+    },
+    {
+      "example": "girl/smiled",
+      "live_extract_s": 0.053701375029049814,
+      "live_forwards": 1,
+      "verify_s": 0.4928494160412811,
+      "verify_forwards": 12,
+      "head_patch_s": 5.839609207992908,
+      "head_patch_forwards": 145,
+      "n_heads_total": 144,
+      "n_edges_S": 75,
+      "drop_S": 3.6179561614990234,
+      "drop_head_oracle": 2.2719335556030273
+    }
+  ]
+}
