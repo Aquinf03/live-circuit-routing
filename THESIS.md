@@ -24,3 +24,24 @@
 
 **Verification.** Main check = **edge ablation**: zero (or mean-ablate) the attention weights on extracted edges only; measure drop on the task metric (induction accuracy / IOI logit diff). Control = **size-matched random edges**. Secondary = **head knockout** on heads that dominate the subgraph (coarser). Skip path patching as required for v1 (optional later if edge ablation is ambiguous).
 
+**Pseudocode.**
+
+```
+function live_circuit(model, tokens, t*, k, B):
+  A = attention_from_forward(model, tokens)          # all layers, heads
+  score[ℓ,h,i,j] = A[ℓ,h,i,j]                        # raw attn (main)
+  S = {}                                             # selected edges
+  frontier = {t*}
+  for hop in 1..B:
+    next = {}
+    for i in frontier:
+      E = top_k_incoming(score, query=i, k=k)        # edges (ℓ,h,j→i)
+      S = S ∪ E
+      next = next ∪ {j for each edge j→i in E}
+    frontier = next - already_expanded
+  metric_full = task_metric(model, tokens)
+  metric_ablate = task_metric(ablate_edges(model, tokens, S))
+  metric_rand = task_metric(ablate_edges(model, tokens, random_edges(|S|)))
+  return S, metric_full, metric_ablate, metric_rand
+```
+
