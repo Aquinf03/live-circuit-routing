@@ -1,0 +1,13 @@
+{
+  "model": "EleutherAI/pythia-410m",
+  "device": "cpu",
+  "score": "attn_x_vnorm",
+  "k": 15,
+  "B": 4,
+  "ban_bos": true,
+  "exclude_self": true,
+  "n_random": 5,
+  "seed": 0,
+  "limit": 5,
+  "n_examples": 5
+}

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import torch
 from transformer_lens import HookedTransformer
+from transformers import AutoModelForCausalLM
 
 
 DEFAULT_MODEL = "gpt2-small"
@@ -17,8 +18,21 @@ def get_device() -> str:
     return "cpu"
 
 
+def _alias_neox_embed_out(hf_model):
+    """HF GPT-NeoX renamed embed_out → lm_head; TL converter still wants embed_out."""
+    if not hasattr(hf_model, "embed_out") and hasattr(hf_model, "lm_head"):
+        hf_model.embed_out = hf_model.lm_head
+    return hf_model
+
+
 def load_model(name: str = DEFAULT_MODEL, device: str | None = None) -> HookedTransformer:
     device = device or get_device()
+    lower = name.lower()
+    if "pythia" in lower or "neox" in lower:
+        # Work around transformers≥5 NeoX API break vs TransformerLens convert_neox_weights.
+        hf_model = AutoModelForCausalLM.from_pretrained(name)
+        hf_model = _alias_neox_embed_out(hf_model)
+        return HookedTransformer.from_pretrained(name, hf_model=hf_model, device=device)
     return HookedTransformer.from_pretrained(name, device=device)
 
 
