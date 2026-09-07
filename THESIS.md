@@ -45,3 +45,13 @@ function live_circuit(model, tokens, t*, k, B):
   return S, metric_full, metric_ablate, metric_rand
 ```
 
+## Baselines
+
+**Random edge subgraph (matched size).** Control for ablation. Let `N = |S|`. Sample `N` edges uniformly from valid causal attention edges (`j ≤ i`, all `ℓ, h`). Ablate them the same way as `S`. Repeat **R = 20** draws; report mean ± std metric drop. Success = extracted `S` hurts clearly more than random.
+
+**Attention-mass only.** Same raw-attn score as main, but **flat**: take the global top-`N` edges into `t*` (or global top-`N`), **no B-hop expansion**. Tests whether the walk/extract rule matters vs “biggest attentions near the answer.” (attn×‖v‖ remains a score variant, not this baseline.)
+
+**Heavier baseline.** **Activation patching** on the same prompts: patch candidate edges/heads, keep those that move the task metric, build a patching-selected set `S_patch`. Compare (1) causal drop of `S` vs `S_patch`, (2) overlap with known induction/IOI heads. Skip full IFR implementation for v1 unless it comes almost free; cite IFR as related, don’t reimplement as required.
+
+**Optional diagnostic (not a claim).** Aquin-style **head entropy** and **sink-token** labels on figures only — helps readers see dead/sink heads. Not scored as a baseline win; not part of the main theorem.
+
