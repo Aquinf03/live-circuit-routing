@@ -1,11 +1,12 @@
 \documentclass[11pt]{article}
 
 \usepackage[margin=1in]{geometry}
-\usepackage{times}
 \usepackage{amsmath,amssymb}
+\usepackage{newtxtext,newtxmath}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{url}
+\usepackage[hidelinks]{hyperref}
 
 \begin{document}
 
@@ -116,7 +117,7 @@ written along this route'':
 \[
 s = A[\ell,h,i,j] \cdot \bigl\|V[\ell,h,j]\bigr\|_2 .
 \]
-That product sits next to a line of work that already warned against reading
+Here \(V[\ell,h,j]\) is the pre-\(W_O\) value vector. That product sits next to a line of work that already warned against reading
 raw attention alone. Kobayashi et al.~\cite{kobayashi2020attn} show that the
 attention output depends on both the weight and the transformed value vector,
 and analyze \(\|\alpha\,f(x)\|\) rather than \(\alpha\) by itself; our score is
@@ -138,7 +139,7 @@ edges came from. Defaults are modest: \(k{=}15\), four hops. Call the kept set
 \paragraph{Check that \(S\) matters.}
 Turn those attention weights off (and renormalize what remains). Measure how
 much the task score falls (target logit for induction, name logit-difference
-for IOI). Do the same to a random edge set of size \(|S|\), several times.
+for IOI). Do the same to ten random edge sets of size \(|S|\).
 If \(S\) hurts clearly more than random, we call the sketch a pass.
 
 That is the whole claim test. No dictionary training, no long search: just
@@ -153,7 +154,7 @@ Pythia-410M~\cite{biderman2023pythia}, and IOI on all three. Each cell uses
 recipe everywhere: product score, \(k{=}15\), four hops, ten random controls.
 Besides means, we report a paired per-example gap
 \(g_i=\Delta_S^{(i)}-\Delta_R^{(i)}\), a \(95\%\) bootstrap CI for the mean
-gap, a two-sided sign test on \(\mathrm{sign}(g_i)\), and (when available) a
+gap, and a
 one-sided Wilcoxon signed-rank test that \(\Delta_S>\Delta_R\).
 
 \subsection{The sketch beats random}
@@ -164,9 +165,8 @@ uses \(n{=}100\) and a paired gap test. On GPT-2 Small induction, turning off
 (gap \(+4.33\); \(95\%\) bootstrap CI \([+3.95,+4.72]\); fails \(0/100\)).
 Medium and Pythia induction keep positive gaps (\({+}1.51\), \({+}2.25\)) with
 CIs that exclude zero, though more examples fail individually (\(19/100\),
-\(11/100\)). IOI is not a one-task trick: Small and Pythia are essentially
-clean (gaps \({+}5.16\) and \({+}5.63\); fails \(0/100\)), and Medium still
-clears a clear margin (gap \({+}3.05\); CI \([+2.63,+3.46]\); fails \(12/100\)).
+\(11/100\)). IOI behaves the same way: Small and Pythia are essentially
+clean (gaps \({+}5.16\) and \({+}5.63\); fails \(0/100\)), and Medium still clears a comfortable margin (gap \({+}3.05\); CI \([+2.63,+3.46]\); fails \(12/100\)).
 In all six cells the Wilcoxon test that \(\Delta_S>\Delta_R\) is
 \(p{<}10^{-10}\).
 
@@ -174,27 +174,31 @@ In all six cells the Wilcoxon test that \(\Delta_S>\Delta_R\) is
   \centering
   \includegraphics[width=0.92\linewidth]{figures/fig3_causal.png}
   \caption{How much the task score falls when we ablate our edges (\(S\))
-  versus random edges of the same size. Taller teal bars mean the sketch
-  actually mattered.}
+  versus random edges of the same size. Taller teal bars mean the sketch actually mattered. Error bars show \(\pm\) one standard error of the mean over prompts.}
   \label{fig:causal}
 \end{figure}
 
 \begin{table}[t]
   \centering
-  \caption{Causal verification at \(n{=}100\). Gap $=\Delta_S-\Delta_R$.
-  Every cell has a $95\%$ bootstrap CI excluding $0$ and Wilcoxon $p{<}10^{-10}$.}
+    \caption{Causal verification at \(n{=}100\). \(\Delta_S\) and \(\Delta_R\) are
+  mean score drops, \(\pm\) one standard deviation across prompts. Gap
+  \(=\Delta_S-\Delta_R\), computed as the mean paired difference; columns are
+  rounded independently, so the gap can differ from the displayed subtraction in
+  the last digit. Every cell has a \(95\%\) bootstrap CI on the gap excluding
+  \(0\) and Wilcoxon \(p{<}10^{-10}\); all six intervals are in the released
+  artifacts.}
   \label{tab:main}
   \setlength{\tabcolsep}{5pt}
-  \begin{tabular}{@{}llrrrcc@{}}
+    \begin{tabular}{@{}llrrccc@{}}
     \toprule
     Task & Model & \(n\) & \(|S|\) & \(\Delta_S\) & \(\Delta_R\) & gap \\
     \midrule
-    Induction & GPT-2 Small  & 100 & 71.0 & \(+4.42{\pm}1.97\) & \(+0.09{\pm}0.18\) & \(\mathbf{+4.33}\) \\
-    Induction & GPT-2 Medium & 100 & 61.2 & \(+1.51{\pm}1.93\) & \(-0.00{\pm}0.06\) & \(\mathbf{+1.51}\) \\
-    Induction & Pythia-410M  & 100 & 59.4 & \(+2.27{\pm}1.79\) & \(+0.03{\pm}0.11\) & \(\mathbf{+2.25}\) \\
-    IOI       & GPT-2 Small  & 100 & 195 & \(+5.30{\pm}1.31\) & \(+0.13{\pm}0.23\) & \(\mathbf{+5.16}\) \\
-    IOI       & GPT-2 Medium & 100 & 192 & \(+3.06{\pm}2.15\) & \(+0.01{\pm}0.09\) & \(\mathbf{+3.05}\) \\
-    IOI       & Pythia-410M  & 100 & 169 & \(+5.63{\pm}1.30\) & \(+0.01{\pm}0.09\) & \(\mathbf{+5.63}\) \\
+        Induction & GPT-2 Small  & 100 &  71.0 & \(+4.42{\pm}1.97\) & \(+0.09{\pm}0.18\) & \textbf{+4.33} \\
+    Induction & GPT-2 Medium & 100 &  61.2 & \(+1.51{\pm}1.93\) & \(\phantom{+}0.00{\pm}0.06\) & \textbf{+1.51} \\
+    Induction & Pythia-410M  & 100 &  59.4 & \(+2.27{\pm}1.79\) & \(+0.03{\pm}0.11\) & \textbf{+2.25} \\
+    IOI       & GPT-2 Small  & 100 & 195.0 & \(+5.30{\pm}1.31\) & \(+0.13{\pm}0.23\) & \textbf{+5.16} \\
+    IOI       & GPT-2 Medium & 100 & 192.0 & \(+3.06{\pm}2.15\) & \(+0.01{\pm}0.09\) & \textbf{+3.05} \\
+    IOI       & Pythia-410M  & 100 & 169.0 & \(+5.63{\pm}1.30\) & \(+0.01{\pm}0.09\) & \textbf{+5.63} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -248,12 +252,8 @@ and the value-norm score).
 
 We poked the knobs on GPT-2 Small induction. Too small a walk (\(k{=}5\)) is
 unreliable; \(k{\ge}10\) is fine, and our default \(k{=}15\) is in the stable
-range. An overly harsh score threshold throws away the signal. Using only late
-layers fails; early layers alone almost match using everything. The product
-score beats raw attention slightly. Changing the prompt template or padding a
-few filler sentences does not kill the gap. In short: the result is not glued
-to one brittle setting, but it does need enough of the graph and the right
-layers.
+range. An overly harsh score threshold throws away the signal. Using only late layers fails. Early layers alone recover most of the gap, which fits the induction story: the routes that matter form early. The product score ranks routes better than raw attention, though the margin is small enough that either would support the main result. Changing the prompt template or padding a
+few filler sentences does not kill the gap. In short: the result is not glued to one brittle setting, but it does need enough of the graph and the right layers. Per-setting gaps are in the released artifacts.
 
 \section{What we are not saying}
 
@@ -271,8 +271,7 @@ draws a map; a short walk on that map is often enough to find something that
 matters, fast.
 
 We also stayed on small open models and two synthetic tasks. Transfer to larger
-models or messier behavior is open. Verification zeros attention and
-renormalizes; other intervention styles might disagree. And \(|S|\) grows with
+models or messier behavior is open. Verification zeros attention and renormalizes, and our control samples edges uniformly, so \(S\) removes far more attention mass than a random set of the same size does. Part of each gap is therefore a mass effect rather than a routing effect, and a mass-matched control would shrink it by an amount we have not measured. Other intervention styles might disagree. And \(|S|\) grows with
 prompt length, so fixed \(k\) and hop depth will eventually under-cover.
 
 \section{Conclusion}
